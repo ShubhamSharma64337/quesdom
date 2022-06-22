@@ -1,4 +1,12 @@
 {%extends "layout.html"%}
 {%block content%}
-    <h1>Hello, welcome to Login page!</h1>
+    <div class="login-form container rounded-3 shadow mt-5 p-5" style="height: fit-content;width: fit-content;"">
+        <h4 class="text-center text-muted">Login</h4>
+        <hr>
+        <form action="/login" method="POST" class="text-end">
+            <input type="text" class="form-control my-2" name="username" placeholder="Username">
+            <input type="password" class="form-control my-2" name="password" placeholder="Password">
+            <button type="submit" class="btn btn-outline-primary">Login</button>
+        </form>
+    </div>
 {%endblock%}
