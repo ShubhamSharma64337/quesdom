@@ -1,0 +1,58 @@
+{%extends "layout.html"%}
+{%block content%}
+<div class="content-section row p-2 pt-md-5 justify-content-center">
+    <div class="col-10 col-sm-6 col-md-4">
+
+        <form action="" method="POST">
+            <div class="form-group py-3">
+                {{form.hidden_tag()}}
+                <!-- {{form.email.label(class="control-label")}} -->
+                {%if form.email.errors %}
+                    {{form.email(class="form-control p-3 is-invalid",placeholder="Email")}}
+                    <div class="invalid-feedback">
+                        {%for error in form.email.errors%}
+                            <span>{{error}}</span>
+                        {%endfor%}
+                    </div>
+                {%else%}
+                    {{form.email(class="form-control p-3",placeholder="Email")}}
+                {%endif%}
+            </div>
+            <div class="form-group py-3">
+                <!-- {{form.password.label(class="control-label")}} -->
+                {%if form.password.errors %}
+                    {{form.password(class="form-control p-3 is-invalid",placeholder="Password")}}
+                    <div class="invalid-feedback">
+                        {%for error in form.password.errors%}
+                            <span>{{error}}</span>
+                        {%endfor%}
+                    </div>
+                {%else%}
+                    {{form.password(class="form-control p-3",placeholder="Password")}}
+                {%endif%}
+            </div>
+            <div class="form-check py-3">
+                {{form.remember.label(class="control-label")}}
+                {{form.remember(class="form-check-input p-1")}}
+            </div>
+            <div class="form-group py-3">
+                {{form.submit(class="btn btn-outline-primary w-100")}}
+            </div>
+        </form>
+        <div class="form-footer border-top pt-3">
+            <div class="small">
+                <span class="text-muted">Forgot Password? </span><a href="#" class="text-decoration-none">Click Here</a>
+    
+            </div>
+            <div class="small">
+                <span class="text-muted">Need an account? </span><a href="{{url_for('register')}}" class="text-decoration-none">Sign Up</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+    
+{%endblock%}
