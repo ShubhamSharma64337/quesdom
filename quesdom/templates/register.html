@@ -4,63 +4,63 @@
     <div class="col-10 col-sm-6 col-md-4 ">
 
         <form action="" method="POST">
-
-            <div class="py-3">
+            
+            <div class="form-floating mb-4 mt-4">
                 {{form.hidden_tag()}}
-            <!-- {{form.username.label(class="control-label")}} -->
                 {%if form.username.errors %}
-                    {{form.username(class="form-control p-3 is-invalid",placeholder="Username")}}
-                    <div class="invalid-feedback">
-                        {%for error in form.username.errors%}
-                            <span>{{error}}</span>
-                        {%endfor%}
-                    </div>
+                {{form.username(class="form-control is-invalid",id="floatingUser",placeholder="Username")}}
+                <div class="invalid-feedback">
+                    {%for error in form.username.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
                 {%else%}
-                    {{form.username(class="form-control p-3",placeholder="Username")}}
+                {{form.username(class="form-control", id="floatingUser", placeholder="Username")}}
                 {%endif%}
+                {{form.username.label(for="floatingUser")}}
 
             </div>
             
-            <div class="py-3">
-                <!-- {{form.email.label(class="control-label")}} -->
+            <div class="form-floating mb-4">
                 {%if form.email.errors %}
-                    {{form.email(class="form-control p-3 is-invalid",placeholder="Email")}}
-                    <div class="invalid-feedback">
-                        {%for error in form.email.errors%}
-                            <span>{{error}}</span>
-                        {%endfor%}
-                    </div>
+                {{form.email(class="form-control is-invalid",id = "floatingEmail", placeholder="Email")}}
+                <div class="invalid-feedback">
+                    {%for error in form.email.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
                 {%else%}
-                    {{form.email(class="form-control p-3",placeholder="Email")}}
+                {{form.email(class="form-control",id = "floatingEmail",placeholder="Email")}}
                 {%endif%}
+                {{form.email.label(class="control-label",for="floatingEmail")}}
             </div>
 
-            <div class="py-3">
-                <!-- {{form.password.label(class="control-label")}} -->
+            <div class="form-floating mb-4">
                 {%if form.password.errors %}
-                    {{form.password(class="form-control p-3 is-invalid",placeholder="Password")}}
-                    <div class="invalid-feedback">
-                        {%for error in form.password.errors%}
-                            <span>{{error}}</span>
-                        {%endfor%}
-                    </div>
+                {{form.password(class="form-control is-invalid",id="floatingPassword",placeholder="Password")}}
+                <div class="invalid-feedback">
+                    {%for error in form.password.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
                 {%else%}
-                    {{form.password(class="form-control p-3",placeholder="Password")}}
+                {{form.password(class="form-control",id="floatingPassword",placeholder="Password")}}
                 {%endif%}
+                {{form.password.label(class="control-label",for="floatingPassword")}}
             </div>
 
-            <div class="py-3">
-                <!-- {{form.confirm_password.label(class="control-label")}} -->
+            <div class="form-floating mb-4">
                 {%if form.confirm_password.errors %}
-                    {{form.confirm_password(class="form-control p-3 is-invalid",placeholder="Email")}}
-                    <div class="invalid-feedback">
-                        {%for error in form.confirm_password.errors%}
-                            <span>{{error}}</span>
-                        {%endfor%}
-                    </div>
+                {{form.confirm_password(class="form-control is-invalid",id="floatingConfirmPassword",placeholder="Email")}}
+                <div class="invalid-feedback">
+                    {%for error in form.confirm_password.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
                 {%else%}
-                    {{form.confirm_password(class="form-control p-3",placeholder="Email")}}
+                {{form.confirm_password(class="form-control",id="floatingConfirmPassword",placeholder="Email")}}
                 {%endif%}
+                {{form.confirm_password.label(class="control-label",for="floatingConfirmPassword")}}
             </div>
             
             <div class="py-3">

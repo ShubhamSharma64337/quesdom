@@ -4,37 +4,38 @@
     <div class="col-10 col-sm-6 col-md-4">
 
         <form action="" method="POST">
-            <div class="form-group py-3">
-                {{form.hidden_tag()}}
-                <!-- {{form.email.label(class="control-label")}} -->
+            <div class="form-floating mb-4 mt-4">
                 {%if form.email.errors %}
-                    {{form.email(class="form-control p-3 is-invalid",placeholder="Email")}}
-                    <div class="invalid-feedback">
-                        {%for error in form.email.errors%}
-                            <span>{{error}}</span>
-                        {%endfor%}
-                    </div>
+                {{form.email(class="form-control is-invalid",id = "floatingEmail", placeholder="Email")}}
+                <div class="invalid-feedback">
+                    {%for error in form.email.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
                 {%else%}
-                    {{form.email(class="form-control p-3",placeholder="Email")}}
+                {{form.email(class="form-control",id = "floatingEmail",placeholder="Email")}}
                 {%endif%}
+                {{form.email.label(class="control-label",for="floatingEmail")}}
             </div>
-            <div class="form-group py-3">
-                <!-- {{form.password.label(class="control-label")}} -->
+
+            <div class="form-floating mb-4">
                 {%if form.password.errors %}
-                    {{form.password(class="form-control p-3 is-invalid",placeholder="Password")}}
-                    <div class="invalid-feedback">
-                        {%for error in form.password.errors%}
-                            <span>{{error}}</span>
-                        {%endfor%}
-                    </div>
+                {{form.password(class="form-control is-invalid",id="floatingPassword",placeholder="Password")}}
+                <div class="invalid-feedback">
+                    {%for error in form.password.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
                 {%else%}
-                    {{form.password(class="form-control p-3",placeholder="Password")}}
+                {{form.password(class="form-control",id="floatingPassword",placeholder="Password")}}
                 {%endif%}
+                {{form.password.label(class="control-label",for="floatingPassword")}}
             </div>
             <div class="form-check py-3">
                 {{form.remember.label(class="control-label")}}
                 {{form.remember(class="form-check-input p-1")}}
             </div>
+
             <div class="form-group py-3">
                 {{form.submit(class="btn btn-outline-primary w-100")}}
             </div>
