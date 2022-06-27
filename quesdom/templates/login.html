@@ -5,6 +5,7 @@
 
         <form action="" method="POST">
             <div class="form-floating mb-4 mt-4">
+                {{form.hidden_tag()}}
                 {%if form.email.errors %}
                 {{form.email(class="form-control is-invalid",id = "floatingEmail", placeholder="Email")}}
                 <div class="invalid-feedback">
