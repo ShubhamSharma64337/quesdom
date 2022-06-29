@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Quisdom - {{title}}</title>
-    <!--To add Inter font from google fonts-->
+    <!-- To add Inter font from google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400&display=swap" rel="stylesheet">
@@ -21,8 +21,8 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-center " id="navbarSupportedContent">
-          <ul class="navbar-nav mb-2 mb-lg-0">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="ms-3 navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item ">
               <a class="nav-link active text-center" aria-current="page" href="{{url_for('home')}}">Home</a>
             </li>
@@ -40,23 +40,21 @@
               <li class="nav-item">
                 <a class="nav-link text-center" href="{{url_for('about')}}">About</a>
               </li>
-              <!--The default button was right here, but Because I wanted it to be seperated from the menu links, so that the menu
-              links can be placed in the middle. But once placed outside, the button won't collapse because only the content inside
-              this div collapses when screen size is reduced. So I cretaed two login buttons, one inside and one outside. The outer
-              button's display is set to none on smaller screens and simultaneously the inner button's display is shifted from none to 
-              normal.
-              -->
-              <a style=" border: 1px solid lightgrey; box-shadow: 0 0 0.1rem 0rem lightgrey;" class="mt-4 fw-bold px-4 py-2 btn text-dark fs-5 rounded-1 d-lg-none mb-2" type="button" href="{{url_for('register')}}">Sign Up</a>
-              <a style=" border: 1px solid lightgrey; box-shadow: 0 0 0.1rem 0rem lightgrey;" class="mt-4 fw-bold px-4 py-2 btn text-dark fs-5 rounded-1 d-lg-none " type="button" href="{{url_for('login')}}">Login</a>
+              
+              
+            </ul>
+            {% if current_user.is_authenticated %}
+              <div class="d-flex justify-content-center">
+                <a id="login-btn-inner" style=" border: 1px solid lightgrey;" class="fw-bold px-4 py-2 btn text-dark fs-5 rounded-1 me-2" type="button" href="#">{{current_user.username}}</a>
+                <a id="login-btn-inner" style=" border: 1px solid lightgrey;" class="fw-bold px-4 py-2 btn text-dark fs-5 rounded-1 me-2" type="button" href="{{url_for('logout')}}">Logout</a>
+              </div>
 
-          </ul>
-        </div>
-        <div class="login-btn d-none d-lg-flex justify-content-end">
-          <a id="login-btn-inner" style="border: 1px solid lightgrey;" class="fw-bold px-4 py-2 btn text-dark fs-5 rounded-1 me-2" type="button" href="{{url_for('register')}}">Sign Up</a>
-        </div>
-        <div class="login-btn d-none d-lg-flex justify-content-end">
-          <a id="login-btn-inner" style="border: 1px solid lightgrey; " class="fw-bold px-4 py-2 btn text-dark fs-5 rounded-1" type="button" href="{{url_for('login')}}">Login</a>
-        </div>
+            {% else %}
+              <div class="d-flex justify-content-center">
+                <a id="login-btn-inner" style="border: 1px solid lightgrey;" class="fw-bold px-4 py-2 btn text-dark fs-5 rounded-1 me-2" type="button" href="{{url_for('register')}}">Sign Up</a>
+                <a id="login-btn-inner" style="border: 1px solid lightgrey; " class="fw-bold px-4 py-2 btn text-dark fs-5 rounded-1" type="button" href="{{url_for('login')}}">Login</a>
+              </div>
+            {%endif%}
       </div>
     </nav>
     
@@ -64,7 +62,7 @@
         {% with messages= get_flashed_messages(with_categories=true) %}
           {%if messages%}
             {% for category,message in messages%}
-              <div class="alert d-flex justify-content-between alert-{{category}}">
+              <div class="alert d-flex justify-content-between alert-{{category}} mt-2">
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
@@ -79,6 +77,8 @@
       was pulled towards the right and was not properly centered. So, using javascript, I will adjust the 
       width of the login button such that it is equal to that of brandname. thus, the menu links will be aligned
       properly at the center*/
+      /*I have just removed the classes and tweaks which were used to center the menu list, this is because it was
+      leading to duplication of the login, signup, logout buttons and led to redundancy. Now the below code is almost useless*/
       function adjustLoginBtn(){
         var brand = document.getElementsByClassName('navbar-brand');
         var brand_width = window.getComputedStyle(brand[0]).width;
