@@ -1,0 +1,21 @@
+{%extends "layout.html"%}
+{%block content%}
+<div class="content-section row p-2 pt-md-5">
+    {%for quiz in quizzes%}
+        <div class="col-10 col-sm-5 col-md-4 my-3">
+            <div class="card">
+                <div class="card-header h3">
+                    {{quiz.quiz_title}}
+                </div>
+                <div class="card-body">
+                    {{quiz.quiz_description}}
+                </div>
+                <div class="card-footer text-end">
+                    <a class="btn btn-success btn-sm" href="#">Play Now</a>
+                </div>
+            </div>
+        </div>
+
+    {%endfor%}
+</div>
+{%endblock%}

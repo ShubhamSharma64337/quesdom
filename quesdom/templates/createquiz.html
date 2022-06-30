@@ -45,18 +45,19 @@
             </div>
             <div class="form-floating mb-4 mt-4">
                 {%if form.errors %}
-                {{form.description(class="form-control is-invalid",id = "floatingDescription", placeholder="Description")}}
+                {{form.description(class="form-control is-invalid",style="height: 10rem;",id = "floatingDescription", placeholder="Description")}}
                 <div class="invalid-feedback">
                     {%for error in form.description.errors%}
                     <span>{{ error }}</span>
                     {%endfor%}
                 </div>
                 {%else%}
-                {{form.description(class="form-control",id = "floatingDescription",placeholder="Description")}}
+                {{form.description(class="form-control",style="height: 10rem;",id = "floatingDescription",placeholder="Description")}}
                 {%endif%}
                 {{form.description.label(class="control-label",for="floatingDescription")}}
             </div>
-            <div class="">
+            <div class="form-buttons d-flex justify-content-between">
+                <a class="btn btn-secondary" href="{{url_for('indexquiz')}}">Back</a>
                 {{form.submit(class='btn btn-primary')}}
             </div>
         </form>

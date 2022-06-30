@@ -1,8 +1,7 @@
 {%extends "layout.html"%}
 {%block content%}
 <div class="content-section row p-2 pt-md-5 justify-content-center">
-    <div class="col-10 col-sm-8 col-md-8">
-        {% set s_no = 1 %}
+    <div class="col-10 col-sm-10 col-md-10 overflow-auto">
         <table class="table overflow-hidden rounded table-borderless shadow text-center">
             <thead class="bg-primary text-white">
                 <td>
@@ -17,7 +16,12 @@
                 <td>
                     Quiz Difficulty
                 </td>
+                <td>
+                    Created On
+                </td>
+                <td>
 
+                </td>
             </thead>
             
             {%for quiz in quizzes%}
@@ -34,11 +38,19 @@
                     <td>
                         {{quiz.quiz_difficulty}}
                     </td>
+                    <td>
+                        {{quiz.date_created.day}}-{{quiz.date_created.month}}-{{quiz.date_created.year}}
+                    </td>
+                    <td class="text-nowrap text-end">
+                        <a class="btn btn-primary btn-sm" href="{{url_for('createquestion',id=quiz.id)}}">Add Questions</a>
+                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('indexquestions',quiz_id=quiz.id)}}">View Questions</a>
+                        <a class="btn btn-outline-danger btn-sm" href="{{url_for('deletequiz',quiz_id=quiz.id)}}">Delete Quiz</a>
+                    </td>
                 </tr>
             {%endfor%}
         </table>
     </div> 
-    <div class="col-10 col-sm-4 col-md-4">
+    <!-- <div class="col-10 col-sm-4 col-md-4">
         <div class="card shadow">
             <div class="card-header text-center bg-primary text-white">
                 Actions
@@ -46,12 +58,12 @@
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item"><a class="text-decoration-none text-dark" href='{{url_for('createquiz')}}'>Add a quiz</a></li>
-                    <li class="list-group-item"><a class="text-decoration-none text-dark" href='{{url_for('createquiz')}}'>Add a quiz</a></li>
+                    <li class="list-group-item"><a class="text-decoration-none text-dark" href='{{url_for('createquiz')}}'>Share a quiz</a></li>
                     <li class="list-group-item"><a class="text-decoration-none text-dark" href='{{url_for('createquiz')}}'>Add a quiz</a></li>
                     <li class="list-group-item"><a class="text-decoration-none text-dark" href='{{url_for('createquiz')}}'>Add a quiz</a></li>
                 </ul>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 {%endblock%}

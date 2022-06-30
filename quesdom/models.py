@@ -49,7 +49,7 @@ class Choices(db.Model):
 class Answers(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'),nullable = False)
-    question_id = db.Column(db.Integer, db.ForeignKey('questions.id'), nullable = False)
+    question_id = db.Column(db.Integer, db.ForeignKey('questions.id',ondelete='CASCADE'), nullable = False)
     attempt_no = db.Column(db.Integer, nullable = False)
     selected_choice = db.Column(db.String(50), nullable = True)
 

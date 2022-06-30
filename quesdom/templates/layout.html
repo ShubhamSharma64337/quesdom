@@ -24,8 +24,16 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="ms-3 navbar-nav me-auto mb-2 mb-lg-0">
             {%if current_user.role == 'Admin'%}
-            <li class="nav-item ">
-              <a class="nav-link active text-center" aria-current="page" href="{{url_for('indexquiz')}}">Quizzes</a>
+            <li class="nav-item dropdown py-4 py-sm-0">
+              <a class="text-center nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Quizzes
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item p-3 p-sm-2" href="{{url_for('indexquiz')}}">View Quizzes</a></li>
+                    <li><a class="dropdown-item p-3 p-sm-2" href="{{url_for('createquiz')}}">Add Quiz</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item p-3 p-sm-2" href="#">Something</a></li>
+                </ul>
             </li>
             {%else%}
             <li class="nav-item ">
@@ -36,7 +44,7 @@
                     Quizzes
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item p-3 p-sm-2" href="#">Action</a></li>
+                      <li><a class="dropdown-item p-3 p-sm-2" href="{{url_for('allquizzes')}}">All Quizzes</a></li>
                       <li><a class="dropdown-item p-3 p-sm-2" href="#">Another action</a></li>
                       <li><hr class="dropdown-divider"></li>
                       <li><a class="dropdown-item p-3 p-sm-2" href="#">Something else here</a></li>
