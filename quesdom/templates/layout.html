@@ -23,6 +23,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="ms-3 navbar-nav me-auto mb-2 mb-lg-0">
+            {%if current_user.role == 'Admin'%}
+            <li class="nav-item ">
+              <a class="nav-link active text-center" aria-current="page" href="{{url_for('indexquiz')}}">Quizzes</a>
+            </li>
+            {%else%}
             <li class="nav-item ">
               <a class="nav-link active text-center" aria-current="page" href="{{url_for('home')}}">Home</a>
             </li>
@@ -40,12 +45,12 @@
               <li class="nav-item">
                 <a class="nav-link text-center" href="{{url_for('about')}}">About</a>
               </li>
+            {%endif%}
               
-              
-            </ul>
+          </ul>
             {% if current_user.is_authenticated %}
               <div class="d-flex justify-content-center">
-                <a id="login-btn-inner" style=" border: 1px solid lightgrey;" class="fw-bold px-4 py-2 btn text-dark fs-5 rounded-1 me-2" type="button" href="#">{{current_user.username}}</a>
+                <a id="login-btn-inner" style=" border: 1px solid lightgrey;" class="fw-bold px-4 py-2 btn text-dark fs-5 rounded-1 me-2" type="button" href="{{url_for('account')}}">{{current_user.username}}</a>
                 <a id="login-btn-inner" style=" border: 1px solid lightgrey;" class="fw-bold px-4 py-2 btn text-dark fs-5 rounded-1 me-2" type="button" href="{{url_for('logout')}}">Logout</a>
               </div>
 

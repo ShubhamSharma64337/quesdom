@@ -1,6 +1,7 @@
+from secrets import choice
 from quesdom.models import Users
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError, SelectField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 class RegistrationForm(FlaskForm):
@@ -26,3 +27,10 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password',validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
+
+class CreateQuizForm(FlaskForm):
+    title = StringField('Quiz Title', validators=[DataRequired()])
+    category = StringField('Quiz Category', validators=[DataRequired()])
+    difficulty = SelectField('Difficulty',choices=['Easy','Moderate','Hard'],validators=[DataRequired()])
+    description = TextAreaField('Description',validators=[DataRequired()])
+    submit = SubmitField('Submit')

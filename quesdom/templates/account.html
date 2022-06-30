@@ -1,0 +1,38 @@
+{%extends "layout.html"%}
+{%block content%}
+<div class="content-section row gap-3 p-2 pt-md-5">
+    <div class="col-10 col-sm-6 col-md-6">
+        <div class="card">
+            <div class="card-header">
+                Profile
+            </div>
+            <div class="card-body">
+                <div class="p-3">
+                    <span>Username</span> <span class="form-control d-inline">{{current_user.username}}</span>
+                </div>
+                <div class="p-3">
+                    <span>E-mail</span> <span class="form-control d-inline">{{current_user.email}}</span>
+                </div>
+                <div class="p-3">
+                    <span>Role</span> <span class="form-control d-inline">{{current_user.role}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-4 col-sm-6 col-md-4">
+        <div class="card">
+            <div class="card-header">
+                Security
+            </div>
+            <div class="card-body">
+                <div class="p-3">
+                    <span><a class="btn btn-sm btn-primary">Change Password</a></span>
+                </div>
+                <div class="p-3">
+                    <span><a class="btn btn-sm btn-primary">Change E-mail</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
