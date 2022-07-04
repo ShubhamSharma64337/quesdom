@@ -1,0 +1,15 @@
+{%extends "layout.html"%}
+{%block content%}
+<div class="content-section container row">
+    {%for percentage in percentages%}
+        <div class="card m-2 p-0 col-10 col-sm-6 col-md-4">
+            <div class="card-header">
+                Attempt {{loop.index}}
+            </div>
+            <div class="card-body h1 text-success">
+                You scored {{percentage}}%
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+{%endblock%}

@@ -8,7 +8,7 @@
             <div class="card-header d-flex justify-content-between">
                 <span class="question">{{loop.index}} - {{question.question_statement}}</span>
                 <span class=" ms-2 buttons text-nowrap">
-                    <a class="btn btn-sm btn-primary" href="#">Modify</a>
+                    <a class="btn btn-sm btn-primary" href="{{url_for('updatequestion',question_id = question.id)}}">Modify</a>
                     <a class="btn btn-sm btn-danger" href="{{url_for('deletequestion',question_id = question.id,quiz_id=question.quiz_id)}}">Delete</a>
                 </span>
             </div>

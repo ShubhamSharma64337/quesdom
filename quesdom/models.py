@@ -12,6 +12,7 @@ class Users(db.Model, UserMixin):
     email = db.Column(db.String(50), unique=True,nullable=False)
     password = db.Column(db.String(60), nullable=False)
     role = db.Column(db.String(20), nullable=False)
+    answers = db.relationship('Answers',backref='answers',lazy=True)
     def __repr__(self):
         return f"Users({self.id}, '{self.username}', '{self.email}', '{self.password}')"
 
@@ -22,7 +23,7 @@ class Quizzes(db.Model):
     quiz_category = db.Column(db.String(20), nullable=False)
     quiz_difficulty = db.Column(db.String(10), nullable=False)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-
+    questions = db.relationship('Questions',backref='contains',cascade="all, delete-orphan",lazy=True)
     def __repr__(self):
         return f"Quizzes('{self.quiz_title}', '{self.quiz_description}','{self.quiz_category}','{self.quiz_difficulty}','{self.date_created}')"
 
@@ -32,7 +33,7 @@ class Questions(db.Model):
     choice_id = db.Column(db.Integer, db.ForeignKey('choices.id'), unique=True, nullable = False)
     quiz_id = db.Column(db.Integer, db.ForeignKey('quizzes.id'), nullable = False)
     duration = db.Column(db.Integer, nullable = False)
-
+    choices = db.relationship('Choices',backref='choices',lazy=True)
     def __repr__(self):
         return f"Questions({self.id}, '{self.question_statement}',{self.choice_id},{self.quiz_id},{self.duration})"
 

@@ -15,3 +15,5 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
 from quesdom import routes
+from quesdom.routes import filter_shuffle
+app.add_template_filter(filter_shuffle) #here we are registering our filter_shuffle jinja template we created in routes.py

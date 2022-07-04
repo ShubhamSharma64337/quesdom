@@ -1,9 +1,11 @@
 from ast import Str, Sub
 from secrets import choice
-from quesdom.models import Users
+from quesdom.models import Users,Choices
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError, SelectField, TextAreaField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError, SelectField, TextAreaField, IntegerField, RadioField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
+
+
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(),Length(min=2,max=20)])
@@ -45,3 +47,12 @@ class CreateQuestionForm(FlaskForm):
     incorrect_choice_2 = StringField('Incorrect Choice - 2',validators=[DataRequired()])
     incorrect_choice_3 = StringField('Incorrect Choice - 3',validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+class UpdateQuestionForm(FlaskForm):
+    statement = StringField('Question Statement',validators=[DataRequired()])
+    duration = IntegerField('Question Duration',validators=[DataRequired()])
+    correct_choice = StringField('Correct Choice', validators=[DataRequired()])
+    incorrect_choice_1 = StringField('Incorrect Choice - 1',validators=[DataRequired()])
+    incorrect_choice_2 = StringField('Incorrect Choice - 2',validators=[DataRequired()])
+    incorrect_choice_3 = StringField('Incorrect Choice - 3',validators=[DataRequired()])
+    submit = SubmitField('Update')
