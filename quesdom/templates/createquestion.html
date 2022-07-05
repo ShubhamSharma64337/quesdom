@@ -2,7 +2,7 @@
 {%block content%}
 <div class="content-section row p-2 pt-md-5 justify-content-center">
     <div class="col-10 col-sm-6 col-md-4">
-        <form action="" method="POST">
+        <form action="{{url_for('createquestion',quiz_id=quiz_id)}}", method="POST">
             <div class="form-floating mb-4 mt-4">
                 {{form.hidden_tag()}}
                 {%if form.statement.errors %}

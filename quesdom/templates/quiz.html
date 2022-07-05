@@ -8,7 +8,7 @@
           {%for question in questions%}  
             <div class="card p-0 my-3">
                   <div class="card-header h3">
-                      {{question.question_statement}}
+                      {{loop.index}} - {{question.question_statement}}
                   </div>
                   <!--The below block of code is using our custom jinja filter named filter_shuffle to shuffle
                   the values of the choices which are shown on the form-->

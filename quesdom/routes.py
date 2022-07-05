@@ -26,7 +26,7 @@ def login():
                 login_user(user, remember=form.remember.data)
                 next_page = request.args.get('next')
                 flash('Login successful!',category='success')
-                return redirect(next_page) if next_page else redirect('home')
+                return redirect(next_page) if next_page else redirect('account')
         else:
             flash('Login unsuccessful, please check email and password!','danger')
     return render_template('login.html',title='Login', form=form)
@@ -109,7 +109,7 @@ def createquestion():
         return redirect('home')
     form = CreateQuestionForm()
     if form.validate_on_submit():
-        question = Questions(question_statement=form.statement.data,quiz_id=request.args.get('id'),duration=form.duration.data)
+        question = Questions(question_statement=form.statement.data,quiz_id=request.args.get('quiz_id'),duration=form.duration.data)
         choice = Choices(correct_choice = form.correct_choice.data,incorrect_choice_1=form.incorrect_choice_1.data,incorrect_choice_2=form.incorrect_choice_2.data, incorrect_choice_3=form.incorrect_choice_3.data)
         db.session.add(choice)
         db.session.flush()
@@ -118,8 +118,8 @@ def createquestion():
         db.session.add(question)
         db.session.commit()
         flash('Question added successfully',category='success')
-        return redirect('indexquiz')
-    return render_template('createquestion.html',title='Create a Quiz',form=form)
+        return redirect(url_for('indexquestions',quiz_id=request.args.get('quiz_id')))
+    return render_template('createquestion.html',title='Create a Quiz',form=form,quiz_id=request.args.get('quiz_id'))
 
 @app.route('/updatequestion',methods=['GET','POST'])
 def updatequestion():
@@ -160,7 +160,7 @@ def indexquestions():
     if Questions.query.filter_by(quiz_id=request.args.get('quiz_id')).count() == 0:
         flash('This quiz currently has no questions!','info')
         return redirect('indexquiz')
-    return render_template('indexquestions.html',title='Question List',questions = Questions.query.filter_by(quiz_id = request.args.get('quiz_id')),choices= Choices.query.all())
+    return render_template('indexquestions.html',title='Question List',questions = Questions.query.filter_by(quiz_id = request.args.get('quiz_id')),choices= Choices.query.all(),quiz_id=request.args.get('quiz_id'))
 
 
 @app.route('/deletequestion')
@@ -247,10 +247,12 @@ def calc_percentage(quiz_id,attempt):
     quiz = Quizzes.query.get(quiz_id)
     max_score = 0
     for question in quiz.questions:
-        max_score = max_score + 1
         answer = Answers.query.filter_by(user_id=current_user.id,question_id=question.id,attempt_no=attempt).first()
+        if answer == None:
+            continue
         correct_choice = question.choices.correct_choice
         selected_choice = answer.selected_choice
+        max_score = max_score + 1
         if correct_choice == selected_choice:
             score = score + 1
     percentage = (score/max_score)*100
