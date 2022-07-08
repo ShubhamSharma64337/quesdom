@@ -13,6 +13,7 @@ class Users(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     role = db.Column(db.String(20), nullable=False)
     answers = db.relationship('Answers',backref='answers',lazy=True)
+    quizzes = db.relationship('Quizzes',backref='quizzes',lazy=True)
     def __repr__(self):
         return f"Users({self.id}, '{self.username}', '{self.email}', '{self.password}')"
 
@@ -23,6 +24,8 @@ class Quizzes(db.Model):
     quiz_category = db.Column(db.String(20), nullable=False)
     quiz_difficulty = db.Column(db.String(10), nullable=False)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    author = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    created_by = db.relationship('Users',backref='created_by',lazy=True)
     questions = db.relationship('Questions',backref='contains',cascade="all, delete-orphan",lazy=True)
     def __repr__(self):
         return f"Quizzes('{self.quiz_title}', '{self.quiz_description}','{self.quiz_category}','{self.quiz_difficulty}','{self.date_created}')"

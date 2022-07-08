@@ -72,7 +72,6 @@ def indexquiz():
         flash('No quizzes found, please add a quiz!','info')
         return redirect('home')
     return render_template('indexquiz.html',title='All Quizzes',quizzes = Quizzes.query.all())
-    
 
 @app.route('/createquiz',methods=['GET','POST'])
 @login_required
@@ -82,7 +81,7 @@ def createquiz():
         return redirect('home')
     form = CreateQuizForm()
     if form.validate_on_submit():
-        quiz = Quizzes(quiz_title=form.title.data,quiz_category=form.category.data,quiz_difficulty=form.difficulty.data,quiz_description=form.description.data,date_created=date.today())
+        quiz = Quizzes(quiz_title=form.title.data,quiz_category=form.category.data,quiz_difficulty=form.difficulty.data,quiz_description=form.description.data,date_created=date.today(),author=current_user.id)
         db.session.add(quiz)
         db.session.commit()
         flash('Quiz created successfully',category='success')
@@ -208,12 +207,25 @@ def filter_shuffle(seq):
 def submitquiz():
     this_attempt = get_this_attempt(request.form.get('quiz_id'))
     questions = Questions.query.filter_by(quiz_id=request.form.get('quiz_id'))
+    answers = []
+    choices = []
+    
     for question in questions:
-        answer = Answers(user_id=current_user.id,question_id=question.id,selected_choice=request.form[f'{question.id}'],attempt_no=this_attempt)
+        try:
+            selected_choice = request.form[f'{question.id}']
+        except:
+            answer = Answers(user_id=current_user.id,question_id=question.id,selected_choice= "Not Attempted",attempt_no=this_attempt)
+
+        else:
+            answer = Answers(user_id=current_user.id,question_id=question.id,selected_choice= request.form[f'{question.id}'],attempt_no=this_attempt)
+
+        answers.append(answer)
+        choices.append(question.choices)
         db.session.add(answer)
         db.session.commit()
-    flash('Answers submitted!','success')
-    return redirect(url_for('result',quiz_id=request.form.get('quiz_id'),attempt=this_attempt))
+    flash('You finished the quiz!','success')
+    percentage=calc_percentage(quiz_id=request.form.get('quiz_id'),attempt=this_attempt)
+    return render_template('result.html',percentage=percentage,answers=answers,questions=questions,choices=choices)
 
 #This method takes the quiz_id as an argument and returns the attempt number for the new quiz submitted by the 
 #currently logged in user
@@ -234,10 +246,6 @@ def get_this_attempt(quiz_id):
         this_attempt = max_attempts + 1
     return this_attempt
 
-@app.route('/result')
-@login_required
-def result():
-    return render_template('result.html',title='Final Result',percentage=calc_percentage(request.args.get('quiz_id'),request.args.get('attempt')))
 
 #This function takes the quiz id and attempt number as an argument and returns the percentage of the currently logged in user for that attempt
 #of the quiz
@@ -255,6 +263,9 @@ def calc_percentage(quiz_id,attempt):
         max_score = max_score + 1
         if correct_choice == selected_choice:
             score = score + 1
+    if score == 0:
+        return 0
+    
     percentage = (score/max_score)*100
     return percentage
 

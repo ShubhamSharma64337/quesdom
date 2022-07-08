@@ -10,12 +10,12 @@
     font-size: 3rem;
     color: var(--main-color);
 }
-#login-btn-inner{
-    transition: 0.2s;
+
+.login-btn-inner{
     box-shadow: 0 0.3rem 0.1rem 0 darkgrey;
 }
 
-#login-btn-inner:hover{
+.login-btn-inner:hover{
     box-shadow: 0 0.1rem 0.1rem 0 darkgrey;
     transform: translateY(2px);
 }
@@ -44,6 +44,9 @@
         
     }
 }
+
+
+
 
 @media(max-width: 768px){
     .main-text{

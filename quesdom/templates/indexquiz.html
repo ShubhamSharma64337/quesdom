@@ -20,6 +20,9 @@
                     Created On
                 </td>
                 <td>
+                    Created By
+                </td>
+                <td>
 
                 </td>
             </thead>
@@ -40,9 +43,13 @@
                     </td>
                     <td>
                         {{quiz.date_created.day}}-{{quiz.date_created.month}}-{{quiz.date_created.year}}
+                        
+                    </td>
+                    <td>
+                        {{quiz.created_by.username}}
                     </td>
                     <td class="text-nowrap text-end">
-                        <a class="btn btn-primary btn-sm" href="{{url_for('createquestion',id=quiz.id)}}">Add Questions</a>
+                        <a class="btn btn-primary btn-sm" href="{{url_for('createquestion',quiz_id=quiz.id)}}">Add Questions</a>
                         <a class="btn btn-outline-primary btn-sm" href="{{url_for('indexquestions',quiz_id=quiz.id)}}">View Questions</a>
                         <a class="btn btn-outline-danger btn-sm" href="{{url_for('deletequiz',quiz_id=quiz.id)}}">Delete Quiz</a>
                     </td>
