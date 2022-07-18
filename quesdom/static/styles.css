@@ -24,6 +24,9 @@
     text-align: justify;
 }
 
+.mytable{
+    box-shadow: 0 0 1rem 0 lightgrey;
+}
 @media(min-width: 1200px){
 .nav-link:hover{
     border-bottom: 2px solid var(--main-color);

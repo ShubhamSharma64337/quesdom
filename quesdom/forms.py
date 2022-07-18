@@ -1,5 +1,6 @@
 from ast import Str, Sub
 from secrets import choice
+from tokenize import String
 from quesdom.models import Users,Choices
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError, SelectField, TextAreaField, IntegerField, RadioField
@@ -56,3 +57,11 @@ class UpdateQuestionForm(FlaskForm):
     incorrect_choice_2 = StringField('Incorrect Choice - 2',validators=[DataRequired()])
     incorrect_choice_3 = StringField('Incorrect Choice - 3',validators=[DataRequired()])
     submit = SubmitField('Update')
+
+class CreateQuizFromApiForm(FlaskForm):
+    title = StringField('Quiz Title',validators=[DataRequired()])
+    category = SelectField('Quiz Category', validators=[DataRequired()])
+    difficulty = SelectField('Difficulty',choices=['Easy','Moderate','Hard'],validators=[DataRequired()])
+    description = TextAreaField('Description',validators=[DataRequired(),Length(min=2,max=200)])
+    numques = IntegerField('Number of questions',validators=[DataRequired()])
+    submit = SubmitField('Submit')

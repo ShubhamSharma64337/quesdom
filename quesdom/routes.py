@@ -1,10 +1,12 @@
 from flask import render_template,flash,redirect, request, url_for
-from quesdom.forms import RegistrationForm,LoginForm,CreateQuizForm,CreateQuestionForm, UpdateQuestionForm
+from quesdom.forms import CreateQuizFromApiForm, RegistrationForm,LoginForm,CreateQuizForm,CreateQuestionForm, UpdateQuestionForm
 from quesdom.models import Questions, Quizzes, Users, Choices, Answers
 from quesdom import app,bcrypt,db
 from flask_login import login_user,current_user,logout_user,login_required
 from datetime import date
 from random import shuffle
+import json
+import requests
 
 @app.route('/')
 @app.route('/home')
@@ -293,3 +295,47 @@ def scores():
     for attempt in range(1,total_attempts+1):
         percentages.append(calc_percentage(request.args.get('quiz_id'),attempt))
     return render_template('scores.html',percentages = percentages)
+
+@app.route('/createquizfromapi',methods=['GET','POST'])
+def createquizfromapi():
+    form = CreateQuizFromApiForm()
+    categoryurl = "https://opentdb.com/api_category.php"
+    categories = requests.get(categoryurl)
+    categories_obj = json.loads(categories.text)
+    i = 0
+    categories_list = []
+    for i in range(len(categories_obj['trivia_categories'])):
+        categories_list.append((categories_obj['trivia_categories'][i]['id'],categories_obj['trivia_categories'][i]['name']))
+        i = i + 1
+    form.category.choices = categories_list
+
+    if form.validate_on_submit() :
+        category = request.form.get('category')
+        category_name = list(filter(lambda item: item['id'] == int(category), categories_obj['trivia_categories']))
+        category_name = category_name[0]['name']
+        quiz = Quizzes(quiz_title=form.title.data,quiz_description=form.description.data,quiz_category=category_name,quiz_difficulty=form.difficulty.data,author=current_user.id,date_created=date.today())
+        questions_url = "https://opentdb.com/api.php?type=multiple&amount=" + str(form.numques.data) + "&category=" + str(form.category.data) + "&difficulty=" + str.lower(form.difficulty.data)
+        questions = requests.get(questions_url)
+        questions_obj = json.loads(questions.text)
+        if questions_obj['response_code'] == 1:
+            flash('Could not retrieve questions, try reducing the amount of questions or change the difficulty', 'danger')
+            return redirect('indexquiz')
+        db.session.add(quiz)
+        db.session.commit()
+        db.session.refresh(quiz)
+        for j in range(len(questions_obj['results'])):
+            correct_choice = questions_obj['results'][j]['correct_answer']
+            incorrect_choice_1 = questions_obj['results'][j]['incorrect_answers'][0]
+            incorrect_choice_2 = questions_obj['results'][j]['incorrect_answers'][1]
+            incorrect_choice_3 = questions_obj['results'][j]['incorrect_answers'][2]
+            question = Questions(question_statement=questions_obj['results'][j]['question'],quiz_id=quiz.id,duration=10)
+            choice = Choices(correct_choice = correct_choice,incorrect_choice_1=incorrect_choice_1,incorrect_choice_2=incorrect_choice_2, incorrect_choice_3=incorrect_choice_3)
+            db.session.add(choice)
+            db.session.flush()
+            db.session.refresh(choice)
+            question.choice_id = choice.id
+            db.session.add(question)
+            db.session.commit()
+        flash('Quiz created from API successfully','success')
+        return redirect('indexquiz')
+    return render_template('createquizfromapi.html',form=form)
