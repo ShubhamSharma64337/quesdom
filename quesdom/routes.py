@@ -28,6 +28,13 @@ def login():
                 login_user(user, remember=form.remember.data)
                 next_page = request.args.get('next')
                 flash('Login successful!',category='success')
+                if next_page:
+                    return redirect(next_page)
+                else:
+                    if current_user.role == "Admin":
+                        return redirect('indexquiz')
+                    else:
+                        return redirect('account')
                 return redirect(next_page) if next_page else redirect('account')
         else:
             flash('Login unsuccessful, please check email and password!','danger')
@@ -73,7 +80,11 @@ def indexquiz():
     if Quizzes.query.filter_by().count() == 0:
         flash('No quizzes found, please add a quiz!','info')
         return redirect('home')
-    return render_template('indexquiz.html',title='All Quizzes',quizzes = Quizzes.query.all())
+
+    page = request.args.get('page',1,int)
+    quizzes = Quizzes.query.paginate(per_page = 5,page=page)
+
+    return render_template('indexquiz.html',title='All Quizzes',quizzes = quizzes)
 
 @app.route('/createquiz',methods=['GET','POST'])
 @login_required
@@ -177,12 +188,16 @@ def deletequestion():
 
 @app.route('/allquizzes')
 def allquizzes():
-    quizzes_with_questions = []
-    for question in Questions.query.all():
-        if not question.id in quizzes_with_questions:
-            quizzes_with_questions.append(question.quiz_id)
-            
-    return render_template('allquizzes.html',title='All Quizzes',quizzes=Quizzes.query.filter(Quizzes.id.in_(quizzes_with_questions)))
+
+    page = request.args.get('page',1, int)
+    quizzes = Quizzes.query.paginate(per_page = 6,page = page)
+
+    # quizzes_with_questions = []
+    # for question in questions:
+    #     if not question.id in quizzes_with_questions:
+    #         quizzes_with_questions.append(question.quiz_id)
+    
+    return render_template('allquizzes.html',title='All Quizzes',quizzes=quizzes)
 
 @app.route('/playquiz')
 @login_required
@@ -298,6 +313,9 @@ def scores():
 
 @app.route('/createquizfromapi',methods=['GET','POST'])
 def createquizfromapi():
+    if not current_user.role == 'Admin':
+       flash('You must be an admin to access this page!',category='info')
+       return redirect('home')
     form = CreateQuizFromApiForm()
     categoryurl = "https://opentdb.com/api_category.php"
     categories = requests.get(categoryurl)
@@ -338,4 +356,4 @@ def createquizfromapi():
             db.session.commit()
         flash('Quiz created from API successfully','success')
         return redirect('indexquiz')
-    return render_template('createquizfromapi.html',form=form)
+    return render_template('createquizfromapi.html',title='API Quiz Form', form=form)

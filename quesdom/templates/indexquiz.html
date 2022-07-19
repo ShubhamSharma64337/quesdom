@@ -28,7 +28,7 @@
                 </td>
             </tr>
             
-            {%for quiz in quizzes%}
+            {%for quiz in quizzes.items%}
                 <tr valign="middle">
                     <td>
                         {{loop.index}}
@@ -57,6 +57,21 @@
                 </tr>
             {%endfor%}
         </table>
+        <div class="page-links text-center">
+            {% for page_num in quizzes.iter_pages() %}
+            {% if page_num %}
+                {% if quizzes.page == page_num %}
+                    <a class="active btn btn-outline-primary btn-sm" href="{{url_for('indexquiz',page=page_num)}}">{{page_num}}</a>
+
+                {% else %}
+                    <a class="btn btn-outline-primary btn-sm" href="{{url_for('indexquiz',page=page_num)}}">{{page_num}}</a>
+                {% endif %}
+            {% else %}
+                <span class="btn btn-outline-primary btn-sm">...</span>
+
+            {% endif %}
+        {% endfor %}
+        </div>
     </div> 
     <!-- <div class="col-10 col-sm-4 col-md-4">
         <div class="card shadow">

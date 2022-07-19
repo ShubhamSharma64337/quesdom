@@ -35,7 +35,7 @@ class LoginForm(FlaskForm):
 class CreateQuizForm(FlaskForm):
     title = StringField('Quiz Title', validators=[DataRequired(),Length(min=2,max=30)])
     category = StringField('Quiz Category', validators=[DataRequired(),Length(min=2,max=20)])
-    difficulty = SelectField('Difficulty',choices=['Easy','Moderate','Hard'],validators=[DataRequired()])
+    difficulty = SelectField('Difficulty',choices=['Easy','Medium','Hard'],validators=[DataRequired()])
     description = TextAreaField('Description',validators=[DataRequired(),Length(min=2,max=200)])
     submit = SubmitField('Submit')
 
@@ -61,7 +61,7 @@ class UpdateQuestionForm(FlaskForm):
 class CreateQuizFromApiForm(FlaskForm):
     title = StringField('Quiz Title',validators=[DataRequired()])
     category = SelectField('Quiz Category', validators=[DataRequired()])
-    difficulty = SelectField('Difficulty',choices=['Easy','Moderate','Hard'],validators=[DataRequired()])
+    difficulty = SelectField('Difficulty',choices=['Easy','Medium','Hard'],validators=[DataRequired()])
     description = TextAreaField('Description',validators=[DataRequired(),Length(min=2,max=200)])
     numques = IntegerField('Number of questions',validators=[DataRequired()])
     submit = SubmitField('Submit')
