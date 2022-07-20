@@ -31,7 +31,9 @@
             {%for quiz in quizzes.items%}
                 <tr valign="middle">
                     <td>
-                        {{loop.index}}
+                        <!--This will use the page variable sent by the action method
+                        to create the serial numbers for the current page dynamically-->
+                        {{loop.index+((quizzes.page-1)*quizzes.per_page)}}
                     </td>
                     <td>
                         {{quiz.quiz_title}}
