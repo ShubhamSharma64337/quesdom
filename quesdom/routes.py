@@ -190,7 +190,7 @@ def deletequestion():
 def allquizzes():
 
     page = request.args.get('page',1, int)
-    quizzes = Quizzes.query.paginate(per_page = 6,page = page)
+    quizzes = Quizzes.query.paginate(per_page = 8,page = page)
 
     # quizzes_with_questions = []
     # for question in questions:
@@ -318,7 +318,13 @@ def createquizfromapi():
        return redirect('home')
     form = CreateQuizFromApiForm()
     categoryurl = "https://opentdb.com/api_category.php"
-    categories = requests.get(categoryurl)
+
+    try:
+            categories = requests.get(categoryurl)
+    except:
+            flash('Could not retrieve categories for the create quiz from api form, make sure you are connected to the internet','danger')
+            return redirect('indexquiz')
+
     categories_obj = json.loads(categories.text)
     i = 0
     categories_list = []

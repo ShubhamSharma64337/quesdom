@@ -1,19 +1,27 @@
 {%extends "layout.html"%}
 {%block content%}
 <div class="content-section row p-2 pt-md-5 justify-content-center">
-  <div class="col-6 my-3">
+  <div class="col-10 col-sm-8 my-3">
     <form action="/submitquiz" method="POST" class="row">
       <input type="hidden" name="quiz_id" value="{{quiz_id}}"/>
-
-          <div class="all-cards">
-            {%for question in questions%}  
-                {% if loop.index == 1 %}
-                  <div class="card question-card p-0 my-3 position-relative" data-index="{{loop.index}}">
-                    <div class="card-header p-5 bg-white text-center">
-                      <span class="border px-3 py-2 rounded-5 bg-light">
-                            {{loop.index}} of {{questions.count()}}
-                          </span>
-                          <br>
+      
+      <div class="all-cards">
+        <div class="mb-3 col-12 justify-content-between d-flex">
+          <button type="button" class="btn btn-primary my-previous-button disabled"  data-page="1">Previous</button>
+          <button type="button" class="btn btn-primary my-next-button"  data-page="2">Next</button>
+        </div>
+        {%for question in questions%} 
+        {% if loop.index == 1%}
+          {% set dprop = "" %}
+        {% else %} 
+          {% set dprop = "d-none"%}
+        {% endif %}
+        <div class="card question-card p-0 my-3 {{dprop}} position-relative" data-index="{{loop.index}}">
+          <div class="card-header p-5 bg-white text-center">
+            <span class="border px-3 py-2 rounded-5 bg-light">
+              {{loop.index}} of {{questions.count()}}
+            </span>
+            <br>
                           <br>
                           <span class="fs-5">
                             
@@ -33,104 +41,41 @@
                       <div class="col-12 col-md-6">
                         
                         <input type="radio" class="btn-check" name="{{question.id}}" value="{{choice_values[0]}}" id="{{loop.index}}_option1" autocomplete="off">
-                        <label class="btn btn-outline-secondary w-100 my-2" for="{{loop.index}}_option1">{{choice_values[0]}}</label>
+                        <label class="btn btn-outline-secondary btn-lg w-100 my-2" for="{{loop.index}}_option1">{{choice_values[0]}}</label>
                       </div>
                       
                       <div class="col-12 col-md-6">
                         
                         <input type="radio" class="btn-check" name="{{question.id}}" value="{{choice_values[1]}}" id="{{loop.index}}_option2" autocomplete="off">
-                        <label class="btn btn-outline-secondary w-100 my-2" for="{{loop.index}}_option2">{{choice_values[1]}}</label>
+                        <label class="btn btn-outline-secondary btn-lg w-100 my-2" for="{{loop.index}}_option2">{{choice_values[1]}}</label>
                         
                       </div>
                       
                       <div class="col-12 col-md-6">
                         
                         <input type="radio" class="btn-check" name="{{question.id}}" value="{{choice_values[2]}}" id="{{loop.index}}_option3" autocomplete="off">
-                        <label class="btn btn-outline-secondary w-100 my-2" for="{{loop.index}}_option3">{{choice_values[2]}}</label>
+                        <label class="btn btn-outline-secondary btn-lg w-100 my-2" for="{{loop.index}}_option3">{{choice_values[2]}}</label>
                         
                       </div>
 
                       <div class="col-12 col-md-6">
                         
                         <input type="radio" class="btn-check" name="{{question.id}}" value="{{choice_values[3]}}" id="{{loop.index}}_option4" autocomplete="off">
-                        <label class="btn btn-outline-secondary w-100 my-2" for="{{loop.index}}_option4">{{choice_values[3]}}</label>
+                        <label class="btn btn-outline-secondary btn-lg w-100 my-2" for="{{loop.index}}_option4">{{choice_values[3]}}</label>
                         
                         
                       </div>
-                      <div class="col-12">
-                        <div class="btn rounded-3 my-2 w-100 btn-danger resetbutton" question="{{question.id}}" question="{{question.id}}">Reset</div>
-
+                      <div class="col-12 d-flex my-2 justify-content-between">
+                        <div class="btn btn-outline-light resetbutton" question="{{question.id}}" question="{{question.id}}"><i class="bi bi-arrow-clockwise fs-3 text-danger"></i></div>
+                        {% if loop.index == questions.count() %}
+                          <input type="submit" class="px-3 btn btn-primary final-submit" value="Submit"/>
+                        {% endif %}
                       </div>
-
+                        
                     </div>
                   </div>
-                  {% else %}
-                    <div class="question-card card p-0 my-3 position-relative d-none" data-index="{{loop.index}}">
-                      <div class="card-header p-5 bg-white text-center">
-                        <span class="border px-3 py-2 rounded-5 bg-light">
-                              {{loop.index}} of {{questions.count()}}
-                            </span>
-                            <br>
-                            <br>
-                            <span class="fs-5">
-                              
-                              {{question.question_statement}}
-                        </span>
-                      </div>
-                      <!--The below block of code is using our custom jinja filter named filter_shuffle to shuffle
-                      the values of the choices which are shown on the form-->
-                      {% set choice_values = [] %}
-                      {% set choice_values = choice_values + [question.choices.correct_choice] %}
-                      {% set choice_values = choice_values + [question.choices.incorrect_choice_1] %}
-                      {% set choice_values = choice_values + [question.choices.incorrect_choice_2] %}
-                      {% set choice_values = choice_values + [question.choices.incorrect_choice_3] %}
-                      {%set choice_values = choice_values|filter_shuffle %}
-                      <div class="card-body row">
-
-                        <div class="col-12 col-md-6">
-                          
-                          <input type="radio" class="btn-check" name="{{question.id}}" value="{{choice_values[0]}}" id="{{loop.index}}_option1" autocomplete="off">
-                          <label class="btn btn-outline-secondary w-100 my-2" for="{{loop.index}}_option1">{{choice_values[0]}}</label>
-                        </div>
-                        
-                        <div class="col-12 col-md-6">
-                          
-                          <input type="radio" class="btn-check" name="{{question.id}}" value="{{choice_values[1]}}" id="{{loop.index}}_option2" autocomplete="off">
-                          <label class="btn btn-outline-secondary w-100 my-2" for="{{loop.index}}_option2">{{choice_values[1]}}</label>
-                          
-                        </div>
-                        
-                        <div class="col-12 col-md-6">
-                          
-                          <input type="radio" class="btn-check" name="{{question.id}}" value="{{choice_values[2]}}" id="{{loop.index}}_option3" autocomplete="off">
-                          <label class="btn btn-outline-secondary w-100 my-2" for="{{loop.index}}_option3">{{choice_values[2]}}</label>
-                          
-                        </div>
-
-                        <div class="col-12 col-md-6">
-                          
-                          <input type="radio" class="btn-check" name="{{question.id}}" value="{{choice_values[3]}}" id="{{loop.index}}_option4" autocomplete="off">
-                          <label class="btn btn-outline-secondary w-100 my-2" for="{{loop.index}}_option4">{{choice_values[3]}}</label>
-                          
-                          
-                        </div>
-                        <div class="col-12">
-                          <div class="btn rounded-3 my-2 w-100 btn-danger resetbutton" question="{{question.id}}" question="{{question.id}}">Reset</div>
-
-                        </div>
-                        
-                      </div>
-                    </div>
-                    
-                    {% endif %}
                     {%endfor%}  
-                    <div class="mb-3 col-12 justify-content-between d-flex">
-                      <button type="button" class="btn btn-sm btn-primary my-previous-button disabled"  data-page="1">Previous</button>
-                        <button type="button" class="btn btn-sm btn-primary my-next-button"  data-page="2">Next</button>
-                    </div>
-                    
                   </div>
-                  <input type="submit"  class="btn btn-primary d-none final-submit" value="Submit">
               </form>
               
             </div>

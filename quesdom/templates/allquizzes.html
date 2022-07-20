@@ -2,32 +2,43 @@
 {%block content%}
 <div class="content-section row pt-md-5">
     {%for quiz in quizzes.items%}
-        <div class="col-12 col-sm-6 col-md-4 p-3">
-            <div class="card">
+        <div class="col-12 col-sm-6 col-md-3 p-5 p-md-3">
+            <!-- <div class="card">
                 <div class="card-header h3" style="height: 3rem; overflow:hidden;">
                     {{quiz.quiz_title}}
                 </div>
-                <div class="card-body" style="height: 5rem; overflow:hidden;">
+                <div class="card-body d-flex justify-content-center align-items-center text-justify" style="height: 10rem; overflow:auto;">
                     {{quiz.quiz_description}}
                 </div>
                 <div class="card-footer text-end">
                     <a class="btn btn-success btn-sm" href="{{url_for('playquiz',quiz_id=quiz.id)}}">Play Now</a>
                 </div>
+            </div> -->
+
+            <div class="my-card" style="border-radius: 0.3rem; box-shadow: 0 0.1rem 0.2rem 0rem lightgrey; background-color: white;">
+                <div class="img-section" style="border-radius: 0.3rem 0.3rem 0 0; height: min-content; overflow: hidden;">
+                        <img src="../static/quiz.jpg" class="img-fluid" style="width: 100%;"/>
+                        
+                </div>
+                <div class="text-section py-3 ms-3">
+                    <p class="fs-4 fw-bold" style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{quiz.quiz_title}}</p>
+                    <a href="{{url_for('playquiz',quiz_id=quiz.id)}}" class="fw-bold fs-5 text-success" style="text-decoration: none;">Play Now</a>
+                </div>
             </div>
         </div>
 
     {%endfor%}
-    <div class="page-links text-center">
+    <div class="page-links py-3 text-center">
         {% for page_num in quizzes.iter_pages() %}
         {% if page_num %}
             {% if quizzes.page == page_num %}
-                <a class="active btn btn-outline-success btn-sm" href="{{url_for('allquizzes',page=page_num)}}">{{page_num}}</a>
+                <a class="active btn btn-outline-success" href="{{url_for('allquizzes',page=page_num)}}">{{page_num}}</a>
 
             {% else %}
-                <a class="btn btn-outline-success btn-sm" href="{{url_for('allquizzes',page=page_num)}}">{{page_num}}</a>
+                <a class="btn btn-outline-success" href="{{url_for('allquizzes',page=page_num)}}">{{page_num}}</a>
             {% endif %}
         {% else %}
-            <span class="btn btn-outline-success btn-sm">...</span>
+            <span class="btn btn-outline-success">...</span>
 
         {% endif %}
     {% endfor %}

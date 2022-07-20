@@ -2,7 +2,7 @@
 {%block content%}
 <div class="row overflow-auto p-4 p-md-2">
     <div class="col" >
-        <table class="table table-borderless mytable text-center rounded-1 overflow-hidden">
+        <table class="table bg-opacity-25 table-borderless bg-white mytable text-center rounded-1 overflow-hidden">
             <tr class="table-warning" valign="middle">
                 <td>
                     S. No.
@@ -29,7 +29,7 @@
             </tr>
             
             {%for quiz in quizzes.items%}
-                <tr valign="middle">
+                <tr valign="middle" >
                     <td>
                         <!--This will use the page variable sent by the action method
                         to create the serial numbers for the current page dynamically-->

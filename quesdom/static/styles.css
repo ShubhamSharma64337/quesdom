@@ -56,3 +56,11 @@
         text-align: justify;
     }
 }
+
+.my-card{
+    transition: 0.3s;
+    cursor: pointer;
+}
+.my-card:hover{
+    transform: scale(103%);
+}
