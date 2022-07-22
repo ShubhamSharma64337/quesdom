@@ -27,11 +27,13 @@
 .mytable{
     box-shadow: 0 0 1rem 0 lightgrey;
 }
+
 @media(min-width: 1200px){
-.nav-link:hover{
+.nav-link.active{
     border-bottom: 2px solid var(--main-color);
     box-shadow: 0 10px 0.5rem -10px lightgrey;
 }
+
 }
 @media(max-width: 1200px){
     .nav-link{
@@ -57,6 +59,12 @@
     }
 }
 
+.play-link{
+    text-decoration: none;
+}
+.play-link:hover{
+    text-decoration: underline;
+}
 .my-card{
     transition: 0.3s;
     cursor: pointer;
