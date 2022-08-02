@@ -54,7 +54,7 @@
                     <td class="text-nowrap text-end">
                         <a class="btn btn-outline-primary btn-sm" href="{{url_for('createquestion',quiz_id=quiz.id)}}">Add Questions</a>
                         <a class="btn btn-outline-primary btn-sm" href="{{url_for('indexquestions',quiz_id=quiz.id)}}">View Questions</a>
-                        <a class="btn btn-outline-danger btn-sm" href="{{url_for('deletequiz',quiz_id=quiz.id)}}">Delete Quiz</a>
+                        <a class="btn btn-outline-danger btn-sm" href="{{url_for('deletequiz')}}" data-bs-quizid = {{quiz.id}} data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Quiz</a>
                     </td>
                 </tr>
             {%endfor%}
@@ -75,20 +75,41 @@
         {% endfor %}
         </div>
     </div> 
-    <!-- <div class="col-10 col-sm-4 col-md-4">
-        <div class="card shadow">
-            <div class="card-header text-center bg-primary text-white">
-                Actions
-            </div>
-            <div class="card-body">
-                <ul class="list-group">
-                    <li class="list-group-item"><a class="text-decoration-none text-dark" href='{{url_for('createquiz')}}'>Add a quiz</a></li>
-                    <li class="list-group-item"><a class="text-decoration-none text-dark" href='{{url_for('createquiz')}}'>Share a quiz</a></li>
-                    <li class="list-group-item"><a class="text-decoration-none text-dark" href='{{url_for('createquiz')}}'>Add a quiz</a></li>
-                    <li class="list-group-item"><a class="text-decoration-none text-dark" href='{{url_for('createquiz')}}'>Add a quiz</a></li>
-                </ul>
-            </div>
-        </div>
-    </div> -->
 </div>
+<!--Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        Are you sure you want to delete this quiz?
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <a href="#" class="btn btn-danger modal-yes-button">Yes</a>
+        </div>
+    </div>
+    </div>
+</div>
+<script>
+    /*The code below adds the correct hyperlink to the yes button in delete Quiz modal*/
+    const exampleModal = document.getElementById('deleteModal')
+    deleteModal.addEventListener('show.bs.modal', event => {
+    // Button that triggered the modal
+    const button = event.relatedTarget
+    // Extract info from data-bs-* attributes
+    const quizid = button.getAttribute('data-bs-quizid')
+    const delurl = button.getAttribute('href')
+    // If necessary, you could initiate an AJAX request here
+    // and then do the updating in a callback.
+    //
+    // Update the modal's content.
+    const modalYesButton = deleteModal.querySelector('.modal-yes-button')
+
+    modalYesButton.href = delurl + "?quiz_id=" + quizid
+})
+</script>
 {%endblock%}
