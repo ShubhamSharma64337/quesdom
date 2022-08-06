@@ -1,0 +1,98 @@
+{%extends "layout.html"%}
+{%block content%}
+<div class="content-section row p-2 pt-md-5 justify-content-center">
+    <div class="col-10 col-sm-6 col-md-4 ">
+
+        <form action="{{url_for('register_teacher')}}" method="POST">
+            
+            <div class="form-floating mb-4 mt-4">
+                {{form.hidden_tag()}}
+                {%if form.name.errors %}
+                {{form.name(class="form-control is-invalid",id="floatingName",placeholder="Name")}}
+                <div class="invalid-feedback">
+                    {%for error in form.name.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.name(class="form-control", id="floatingName", placeholder="Name")}}
+                {%endif%}
+                {{form.name.label(for="floatingName")}}
+
+            </div>
+            
+            <div class="form-floating mb-4 mt-4">
+                {%if form.username.errors %}
+                {{form.username(class="form-control is-invalid",id="floatingUser",placeholder="Username")}}
+                <div class="invalid-feedback">
+                    {%for error in form.username.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.username(class="form-control", id="floatingUser", placeholder="Username")}}
+                {%endif%}
+                {{form.username.label(for="floatingUser")}}
+
+            </div>
+            
+            <div class="form-floating mb-4">
+                {%if form.email.errors %}
+                {{form.email(class="form-control is-invalid",id = "floatingEmail", placeholder="Email")}}
+                <div class="invalid-feedback">
+                    {%for error in form.email.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.email(class="form-control",id = "floatingEmail",placeholder="Email")}}
+                {%endif%}
+                {{form.email.label(class="control-label",for="floatingEmail")}}
+            </div>
+
+            <div class="form-floating mb-4">
+                {%if form.password.errors %}
+                {{form.password(class="form-control is-invalid",id="floatingPassword",placeholder="Password")}}
+                <div class="invalid-feedback">
+                    {%for error in form.password.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.password(class="form-control",id="floatingPassword",placeholder="Password")}}
+                {%endif%}
+                {{form.password.label(class="control-label",for="floatingPassword")}}
+            </div>
+
+            <div class="form-floating mb-4">
+                {%if form.confirm_password.errors %}
+                {{form.confirm_password(class="form-control is-invalid",id="floatingConfirmPassword",placeholder="Email")}}
+                <div class="invalid-feedback">
+                    {%for error in form.confirm_password.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.confirm_password(class="form-control",id="floatingConfirmPassword",placeholder="Email")}}
+                {%endif%}
+                {{form.confirm_password.label(class="control-label",for="floatingConfirmPassword")}}
+            </div>
+            
+            <div class="py-3">
+                {{form.submit(class="btn btn-outline-primary px-3 py-2 w-100")}}
+            </div>
+
+        </form>
+        <div class="form-footer border-top pt-3">
+            <div class="small">
+                <span class="text-muted">Already have an account? </span><a href="{{url_for('login')}}" class="text-decoration-none">Sign In</a>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+
+    
+{%endblock%}

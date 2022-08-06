@@ -15,9 +15,9 @@
                     <a class="btn btn-sm btn-danger" href="{{url_for('deletequestion',question_id = question.id,quiz_id=question.quiz_id)}}">Delete</a>
                 </span>
             </div>
-            <div class="card-body">
+            <div class="card-body list-group p-0" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
                     
-                    <ul class="list-group">
+
                         {%for choice in choices%}
                             {%if choice.id == question.choice_id%}
                                 <li class="list-group-item bg-success bg-opacity-50">{{choice.correct_choice}}</li>
@@ -26,7 +26,7 @@
                                 <li class="list-group-item bg-danger bg-opacity-50">{{choice.incorrect_choice_3}}</li>
                             {%endif%}
                         {%endfor%}
-                    </ul>
+
             </div>
         </div>
         {%endfor%}

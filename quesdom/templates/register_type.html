@@ -1,0 +1,45 @@
+{%extends "layout.html"%}
+{%block content%}
+    <div class="content-section container row justify-content-center">
+        
+        <div class="col-12 col-lg-6 d-flex flex-lg-row flex-column justify-content-center align-items-center gap-3" style="height: 80vh;">
+            <a class="text-decoration-none text-dark mycard" href = "{{url_for('register_teacher')}}">
+                <div class="row">
+                    <div class="col d-flex flex-lg-column justify-content-end">
+                        <div class="mycard-image d-flex justify-content-center align-items-center  px-5 p-0 p-lg-5 bg-danger">
+                            <i class="bi bi-book h1 text-white"></i>
+                        </div>
+                        <div class="mycard-text fw-bold fs-5 text-center px-5 py-4">
+                            Teacher
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <a class="text-decoration-none text-dark mycard" href = "{{url_for('register_student')}}">
+                <div class="row">
+                    <div class="col d-flex flex-lg-column justify-content-end">
+                        <div class="mycard-image d-flex justify-content-center align-items-center px-5 p-0 p-lg-5 bg-success">
+                            <i class="bi bi-person-video h1 text-white"></i>
+                        </div>
+                        <div class="mycard-text fw-bold fs-5 text-center px-5 py-4">
+                            Student
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <a class="text-decoration-none text-dark mycard" href = "{{url_for('register_personal')}}">
+                <div class="row">
+                    <div class="col d-flex flex-lg-column justify-content-end">
+                        <div class="mycard-image d-flex justify-content-center align-items-center px-5 p-0 p-lg-5 bg-warning">
+                            <i class="bi bi-house-door h1 text-white"></i>
+                        </div>
+                        <div class="mycard-text fw-bold fs-5 text-center px-5 py-4">
+                            Personal
+                        </div>
+                    </div>
+                </div>
+            </a>
+            
+        </div>
+    </div>
+{%endblock%}

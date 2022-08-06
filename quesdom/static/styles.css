@@ -72,3 +72,19 @@
 .my-card:hover{
     transform: scale(103%);
 }
+
+.mycard{
+    background-color: white;
+    border-radius: 0.3rem;
+    box-shadow: 0 0 0.1rem 0.1rem lightgrey;
+    margin: 0 2rem;
+    transition: 0.3s;
+}
+
+.mycard-image{
+    border-radius: 0.3rem 0.3rem;
+}
+
+.mycard:hover{
+    transform: scale(1.1);
+}

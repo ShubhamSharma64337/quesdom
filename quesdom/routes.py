@@ -1,6 +1,6 @@
 from flask import render_template,flash,redirect, request, url_for
-from quesdom.forms import CreateQuizFromApiForm, RegistrationForm,LoginForm,CreateQuizForm,CreateQuestionForm, UpdateQuestionForm
-from quesdom.models import Questions, Quizzes, Users, Choices, Answers
+from quesdom.forms import CreateQuizFromApiForm, RegistrationForm, TeacherRegistrationForm, StudentRegistrationForm, LoginForm,CreateQuizForm,CreateQuestionForm, UpdateQuestionForm
+from quesdom.models import Questions, Quizzes, Users, Choices, Answers, Teachers, Students
 from quesdom import app,bcrypt,db
 from flask_login import login_user,current_user,logout_user,login_required
 from datetime import date
@@ -55,6 +55,72 @@ def register():
         flash(f'Account Created for {form.username.data}, You can login now!','success')
         return redirect(url_for('login'))
 
+    return render_template('register_type.html',title='Register', form=form)
+
+
+@app.route("/registerteacher", methods=['GET', 'POST'])
+def register_teacher():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = TeacherRegistrationForm()
+    if form.validate_on_submit():
+        hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = Users(username=form.username.data,email=form.email.data,password = hashed_pw, role='Player')
+        
+        teacher = Teachers(name = form.name.data)
+        db.session.add(teacher)
+        db.session.flush()
+        db.session.refresh(teacher)
+
+        user.tr_id = teacher.id
+        db.session.add(user)
+        db.session.commit()
+
+        flash(f'Account Created for {form.username.data}, You can login now!','success')
+        return redirect(url_for('login'))
+
+    return render_template('registerteacher.html',title='Register', form=form)
+    
+
+@app.route("/registerstudent", methods=['GET', 'POST'])
+def register_student():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = StudentRegistrationForm()
+    if form.validate_on_submit():
+        hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = Users(username=form.username.data,email=form.email.data,password = hashed_pw, role='Player')
+        
+        student = Students(name = form.name.data, semester = form.semester.data)
+        db.session.add(student)
+        db.session.flush()
+        db.session.refresh(student)
+
+        user.stu_id = student.id
+
+        db.session.add(user)
+        db.session.commit()
+
+        flash(f'Account Created for {form.username.data}, You can login now!','success')
+        return redirect(url_for('login'))
+
+    return render_template('registerstudent.html',title='Register', form=form)
+    
+@app.route("/registerpersonal", methods=['GET', 'POST'])
+def register_personal():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = Users(username=form.username.data,email=form.email.data,password = hashed_pw, role='Player')
+        
+        db.session.add(user)
+        db.session.commit()
+
+        flash(f'Account Created for {form.username.data}, You can login now!','success')
+        return redirect(url_for('login'))
+
     return render_template('register.html',title='Register', form=form)
     
 @app.route('/logout')
@@ -79,7 +145,6 @@ def indexquiz():
         return redirect('home')
     if Quizzes.query.filter_by().count() == 0:
         flash('No quizzes found, please add a quiz!','info')
-        return redirect('home')
 
     page = request.args.get('page',1,int)
     quizzes = Quizzes.query.paginate(per_page = 5,page=page)
@@ -290,7 +355,7 @@ def calc_percentage(quiz_id,attempt):
 def myquizzes():
         
         quizzes_played = get_quizzes_played()
-        return render_template('myquizzes.html',title='All Quizzes',quizzes=quizzes_played)
+        return render_template('myquizzes.html',title='My Quizzes',quizzes=quizzes_played)
 
 def get_quizzes_played():
     quizzes = []

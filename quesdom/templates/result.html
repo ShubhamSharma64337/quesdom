@@ -1,9 +1,8 @@
 {%extends "layout.html"%}
 {%block content%}
    
-    <div class="content-section container row p-2  justify-content-center">
+    <div class="content-section container row p-2 justify-content-center">
 
-        
         <div class="col-10 col-sm-7 col-md-6">
             <div class="card p-0">
                 <div class="card-header">
@@ -13,69 +12,80 @@
                     You have scored {{percentage}}%
                 </div>
             </div>
-        <!--Correct and incorrect answers-->
-        {%for question in questions%}
-        {% for answer in answers %}
-            {%if answer.question_id == question.id%}
 
-                <div class="card my-3">
-                    <div class="card-header d-flex justify-content-between">
-                        <span class="question">{{loop.index}} - {{question.question_statement}}</span>
-                        
-                    </div>
-                    <div class="card-body">
-                    
-                    <ul class="list-group">
-                        {%for choice in choices%}
-                            {% set correct = false%}
-                            {%if choice.id == question.choice_id%}
-                                {%if answer.selected_choice == choice.correct_choice%}
-                                    {% set attempted = true %}
-                                    {% set correct = true%}
-                                    <li class="list-group-item bg-opacity-50 bg-success">{{choice.correct_choice}}</li>
-                                {%else%}
-                                    <li class="list-group-item bg-opacity-50 bg-success">{{choice.correct_choice}}</li>
-                                {%endif%}
-                                {%if answer.selected_choice == choice.incorrect_choice_1%}
-                                {% set attempted = true %}
-                                    <li class="list-group-item bg-opacity-50 bg-danger">{{choice.incorrect_choice_1}}</li>
-                                    {%else%}
-                                    <li class="list-group-item bg-opacity-50">{{choice.incorrect_choice_1}}</li>
-                                {%endif%}
-                                {%if answer.selected_choice == choice.incorrect_choice_2%}
-                                {% set attempted = true %}
-                                    <li class="list-group-item bg-opacity-50 bg-danger">{{choice.incorrect_choice_2}}</li>
-                                    {%else%}
-                                    <li class="list-group-item bg-opacity-50">{{choice.incorrect_choice_2}}</li>
-                                {%endif%}
-                                {%if answer.selected_choice == choice.incorrect_choice_3%}
-                                {% set attempted = true %}
-                                    <li class="list-group-item bg-opacity-50 bg-danger">{{choice.incorrect_choice_3}}</li>
-                                    {%else%}
-                                    <li class="list-group-item bg-opacity-50">{{choice.incorrect_choice_3}}</li>
-                                    {%endif%}      
-                                {%if not attempted == true %}
-                                    <li class="text-center list-group-item bg-opacity-25 bg-warning">Not Attempted</li>
-                                {%else%}
-                                    {%if correct == true %}
-                                        <li class="text-center list-group-item bg-opacity-25 bg-success">Correct</li>
-                                        {%else%}
-                                        <li class="text-center list-group-item bg-opacity-25 bg-danger">Incorrect</li>
-                                    {%endif%}
+            <div class="accordion mt-3" id="accordionExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      View Answers
+                    </button>
+                  </h2>
+                  <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <!--Correct and incorrect answers-->
+                        {%for question in questions%}
+                        {% for answer in answers %}
+                            {%if answer.question_id == question.id%}
 
-                                {%endif%}
+                                <div class="card my-3">
+                                    <div class="card-header d-flex justify-content-between">
+                                        <span class="question">{{loop.index}} - {{question.question_statement}}</span>
+                                        
+                                    </div>
+                                    <div class="card-body list-group p-0" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">
+                                    
+                                        {%for choice in choices%}
+                                            {% set correct = false%}
+                                            {%if choice.id == question.choice_id%}
+                                                {%if answer.selected_choice == choice.correct_choice%}
+                                                    {% set attempted = true %}
+                                                    {% set correct = true%}
+                                                    <li class="list-group-item bg-opacity-50 bg-success">{{choice.correct_choice}}</li>
+                                                {%else%}
+                                                    <li class="list-group-item bg-opacity-50 bg-success">{{choice.correct_choice}}</li>
+                                                {%endif%}
+                                                {%if answer.selected_choice == choice.incorrect_choice_1%}
+                                                {% set attempted = true %}
+                                                    <li class="list-group-item bg-opacity-50 bg-danger">{{choice.incorrect_choice_1}}</li>
+                                                    {%else%}
+                                                    <li class="list-group-item bg-opacity-50">{{choice.incorrect_choice_1}}</li>
+                                                {%endif%}
+                                                {%if answer.selected_choice == choice.incorrect_choice_2%}
+                                                {% set attempted = true %}
+                                                    <li class="list-group-item bg-opacity-50 bg-danger">{{choice.incorrect_choice_2}}</li>
+                                                    {%else%}
+                                                    <li class="list-group-item bg-opacity-50">{{choice.incorrect_choice_2}}</li>
+                                                {%endif%}
+                                                {%if answer.selected_choice == choice.incorrect_choice_3%}
+                                                {% set attempted = true %}
+                                                    <li class="list-group-item bg-opacity-50 bg-danger">{{choice.incorrect_choice_3}}</li>
+                                                    {%else%}
+                                                    <li class="list-group-item bg-opacity-50">{{choice.incorrect_choice_3}}</li>
+                                                    {%endif%}      
+                                                {%if not attempted == true %}
+                                                    <li class="text-center list-group-item bg-opacity-25 bg-warning">Not Attempted</li>
+                                                {%else%}
+                                                    {%if correct == true %}
+                                                        <li class="text-center list-group-item bg-opacity-25 bg-success">Correct</li>
+                                                        {%else%}
+                                                        <li class="text-center list-group-item bg-opacity-25 bg-danger">Incorrect</li>
+                                                    {%endif%}
+
+                                                {%endif%}
+                                            {%endif%}
+                                        {%endfor%}
+                                    </div>
+                                </div>
+
                             {%endif%}
+                        {% endfor %}
+
                         {%endfor%}
-                    </ul>
+
                     </div>
+                  </div>
                 </div>
-
-            {%endif%}
-        {% endfor %}
-
-    {%endfor%}
-        
-        
+            </div>
     </div>
     </div>
 {%endblock%}

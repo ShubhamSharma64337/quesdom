@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Quisdom - {{title}}</title>
+    <title>Quesdom - {{title}}</title>
     <!-- To add Inter font from google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,7 +32,7 @@
                       {%else%}
                         
                           <li class="nav-item ">
-                            <a class="nav-link active text-center" aria-current="page" href="{{url_for('home')}}">Home</a>
+                            <a class="nav-link {%if title=='Home' %} active {%endif%} text-center" aria-current="page" href="{{url_for('home')}}">Home</a>
                           </li>
                           <li class="nav-item dropdown py-4 py-sm-0 px-4">
                               <a class="text-center nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -46,7 +46,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link text-center" href="{{url_for('about')}}">About</a>
+                              <a class="nav-link {%if title=='About Page' %} active {%endif%} text-center" href="{{url_for('about')}}">About</a>
                             </li>
                       
                       {%endif%}

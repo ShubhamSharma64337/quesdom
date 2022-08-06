@@ -14,6 +14,9 @@ class Users(db.Model, UserMixin):
     role = db.Column(db.String(20), nullable=False)
     answers = db.relationship('Answers',backref='answers',lazy=True)
     quizzes = db.relationship('Quizzes',backref='quizzes',lazy=True)
+    tr_id = db.Column(db.Integer, db.ForeignKey('teachers.id'), nullable = True)
+    stu_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable = True)
+
     def __repr__(self):
         return f"Users({self.id}, '{self.username}', '{self.email}', '{self.password}')"
 
@@ -59,3 +62,44 @@ class Answers(db.Model):
 
     def __repr__(self):
         return f"Answers({self.id}, {self.user_id},{self.question_id},{self.attempt_no},'{self.selected_choice}')"
+
+class Students(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(40), nullable = False)
+    semester = db.Column(db.Integer, nullable = False)
+
+    def __repr__(self):
+        return f"Students({self.id}, {self.name}, {self.semester}"
+
+class Teachers(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(40), nullable = False)
+
+    def __repr__(self):
+        return f"Teachers({self.id}, {self.name}"
+
+class Classrooms(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(40), nullable = False)
+    tr_id = db.Column(db.Integer, db.ForeignKey('teachers.id'), nullable = False)
+
+    def __repr__(self):
+        return f"Classrooms({self.id}, {self.name}, {self.tr_id}"
+
+class Requests(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    stu_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable = False)
+    class_id = db.Column(db.Integer, db.ForeignKey('classrooms.id'), nullable = False)
+    status = db.Column(db.Boolean, nullable = False)
+
+    def __repr__(self):
+        return f"Requests({self.id}, {self.stu_id}, {self.class_id}, {self.status}"
+
+class StudentClassroom(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    stu_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable = False)
+    class_id = db.Column(db.Integer, db.ForeignKey('classrooms.id'), nullable = False)
+
+    def __repr__(self):
+        return f"StudentClassroom({self.id}, {self.stu_id}, {self.class_id}"
+
