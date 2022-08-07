@@ -22,6 +22,9 @@
                 <td>
                     Created By
                 </td>
+                <td>
+                    Timed
+                </td>
                 <td class="text-end">
                     <a class="btn btn-success" href="{{url_for('createquizfromapi')}}"><i class="bi bi-plus-circle"></i> Add Using API</a>
                     <a class="btn btn-success" href="{{url_for('createquiz')}}"><i class="bi bi-plus-circle"></i> Add</a>
@@ -50,6 +53,9 @@
                     </td>
                     <td>
                         {{quiz.created_by.username}}
+                    </td>
+                    <td>
+                        {{quiz.timed}}
                     </td>
                     <td class="text-nowrap text-end">
                         <a class="btn btn-outline-primary btn-sm" href="{{url_for('createquestion',quiz_id=quiz.id)}}">Add Questions</a>

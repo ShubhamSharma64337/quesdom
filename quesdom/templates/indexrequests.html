@@ -1,0 +1,21 @@
+{% extends "layout.html"%}
+{% block content %}
+<div class="row overflow-auto p-4 p-md-2">
+
+            {%for request in requests%}
+            <div class="col-12 col-sm-6 col-md-3 p-5 p-md-3">
+                <div class="my-card border" style="border-radius: 0.3rem; box-shadow: 0 0.1rem 0.2rem 0rem lightgrey; background-color: white;">
+
+                    <div class="text-section p-3">
+                        <p class="fs-4" style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">Name - {{request.student.name}}</p>
+                        <p class="fs-4" style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">Semester - {{request.student.semester}}</p>
+                    </div>
+                    <span class="text-center d-block">
+
+                        <a href="{{url_for('acceptrequest',request_id = request.id)}}" class="fw-bold fs-5 btn rounded-0 btn-success w-100">Add to class</a>
+                    </span>
+                </div>
+            </div>
+            {%endfor%}
+</div>
+{% endblock %}

@@ -14,7 +14,7 @@
                     Class Name
                 </td>
                 <td class="text-end">
-                    <a class="btn btn-success" href="{{url_for('createclassroom')}}"><i class="bi bi-plus-circle"></i> Create Class</a>
+                    <a class="btn btn-success" href="{{url_for('createjoinrequest')}}"><i class="bi bi-plus-circle"></i> Join Class</a>
                 </td>
             </tr>
             
@@ -33,10 +33,7 @@
                     </td>
 
                     <td class="text-nowrap text-end">
-                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('createquiz', class_id = class.id)}}">Add Quiz</a>
-                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('indexquiz', class_id = class.id)}}">View Quizzes</a>
-                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('indexstudents', class_id = class.id)}}">View Students</a>
-                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('indexrequests', class_id = class.id)}}">Joining Requests</a>
+                        <a class="btn btn-primary btn-sm" href="{{url_for('createquestion')}}">View Quizzes</a>
                     </td>
                 </tr>
             {%endfor%}

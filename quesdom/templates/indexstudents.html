@@ -1,0 +1,50 @@
+{% extends "layout.html"%}
+{% block content %}
+<div class="row overflow-auto p-4 p-md-2">
+    <div class="col" >
+        <table class="table bg-opacity-50 table-borderless bg-white mytable text-center rounded-1 overflow-hidden">
+            <tr class="table-warning" valign="middle">
+                <td>
+                    S. No.
+                </td>
+
+                <td>
+                    Name
+                </td>
+
+                <td>
+                    Semester
+                </td>
+                <td>
+                    Student ID
+                </td>
+                <td>
+
+                </td>
+            </tr>
+            
+            {%for student in students%}
+                <tr valign="middle" >
+                    <td>
+                        {{loop.index}}
+                    </td>
+                    <td>
+                        {{student.student.name}}
+                    </td>
+                    <td>
+                        {{student.student.semester}}
+                    </td>
+                    <td>
+                        {{student.id}}
+                    </td>
+
+                    <td class="text-nowrap text-end">
+                    </td>
+                </tr>
+            {%endfor%}
+        </table>
+        
+        </div>
+    </div> 
+</div>
+{% endblock %}

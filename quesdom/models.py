@@ -26,10 +26,12 @@ class Quizzes(db.Model):
     quiz_description = db.Column(db.String(200), nullable=False)
     quiz_category = db.Column(db.String(20), nullable=False)
     quiz_difficulty = db.Column(db.String(10), nullable=False)
+    timed = db.Column(db.Boolean, nullable = False)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     author = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     created_by = db.relationship('Users',backref='created_by',lazy=True)
     questions = db.relationship('Questions',backref='contains',cascade="all, delete-orphan",lazy=True)
+    class_id = db.Column(db.Integer, db.ForeignKey('classrooms.id'), nullable=True)
     def __repr__(self):
         return f"Quizzes('{self.quiz_title}', '{self.quiz_description}','{self.quiz_category}','{self.quiz_difficulty}','{self.date_created}')"
 
@@ -91,6 +93,8 @@ class Requests(db.Model):
     stu_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable = False)
     class_id = db.Column(db.Integer, db.ForeignKey('classrooms.id'), nullable = False)
     status = db.Column(db.Boolean, nullable = False)
+    student = db.relationship('Students',backref='students',lazy=True)
+
 
     def __repr__(self):
         return f"Requests({self.id}, {self.stu_id}, {self.class_id}, {self.status}"
@@ -99,7 +103,7 @@ class StudentClassroom(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     stu_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable = False)
     class_id = db.Column(db.Integer, db.ForeignKey('classrooms.id'), nullable = False)
-
+    student = db.relationship('Students',backref='student_record',lazy=True)
     def __repr__(self):
         return f"StudentClassroom({self.id}, {self.stu_id}, {self.class_id}"
 

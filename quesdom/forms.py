@@ -76,6 +76,7 @@ class CreateQuizForm(FlaskForm):
     category = StringField('Quiz Category', validators=[DataRequired(),Length(min=2,max=20)])
     difficulty = SelectField('Difficulty',choices=['Easy','Medium','Hard'],validators=[DataRequired()])
     description = TextAreaField('Description',validators=[DataRequired(),Length(min=2,max=200)])
+    timed = BooleanField('With Timer?')
     submit = SubmitField('Submit')
 
 class CreateClassForm(FlaskForm):
@@ -108,3 +109,7 @@ class CreateQuizFromApiForm(FlaskForm):
     description = TextAreaField('Description',validators=[DataRequired(),Length(min=2,max=200)])
     numques = IntegerField('Number of questions',validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+class CreateJoinRequestForm(FlaskForm):
+    class_id = IntegerField('Classroom ID',validators=[DataRequired()])
+    submit = SubmitField('Send Request')

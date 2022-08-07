@@ -56,6 +56,10 @@
                 {%endif%}
                 {{form.description.label(class="control-label",for="floatingDescription")}}
             </div>
+            <div class="form-check my-4">
+                {{form.timed.label(class="control-label")}}
+                {{form.timed(class="form-check-input p-1")}}
+            </div>
             <div class="form-buttons d-flex justify-content-between">
                 <a class="btn btn-secondary" href="{{url_for('indexquiz')}}">Back</a>
                 {{form.submit(class='btn btn-primary')}}

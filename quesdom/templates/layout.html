@@ -13,6 +13,9 @@
 
     <link rel="stylesheet" href="../static/bootstrap-icons-1.9.1/bootstrap-icons.css">
     <link href="../static/bootstrap-5.2.0-dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="../static/bootstrap-5.2.0-dist/js/popper.min.js"></script>
+    <script src="../static/bootstrap-5.2.0-dist/js/bootstrap.bundle.min.js"></script>
   </head>
   <body  style="height: 100vh; font-family: Inter;" onload="adjustLoginBtn();">
     <nav class="px-2 navbar navbar-expand-lg bg-opacity-50 bg-white border-bottom">
@@ -47,7 +50,7 @@
                             <a class="nav-link {%if title=='All Quizzes' %} active {%endif%} text-center" href="{{url_for('allquizzes')}}">Quizzes</a>
                           </li>
                           <li class="nav-item mx-2">
-                            <a class="nav-link {%if title=='Classrooms' %} active {%endif%} text-center" href="{{url_for('allquizzes')}}">Classrooms</a>
+                            <a class="nav-link {%if title=='Classrooms' %} active {%endif%} text-center" href="{{url_for('studentclassrooms')}}">Classrooms</a>
                           </li>
                           <li class="nav-item mx-2">
                             <a class="nav-link {%if title=='About Page' %} active {%endif%} text-center" href="{{url_for('about')}}">About</a>
@@ -100,48 +103,49 @@
         {% with messages= get_flashed_messages(with_categories=true) %}
           {%if messages%}
             {% for category,message in messages%}
-              <div class="alert d-flex justify-content-between alert-{{category}} mt-2">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
+            <div class="alert d-flex justify-content-between alert-{{category}} mt-2">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             {%endfor%}
-          {%endif%}
-        {%endwith%}
-        {%block content%}{%endblock%}
-    </div>
-    <script>
-      /*The login button's width was lesser than the width of brand name, due to this the menu list
-      was pulled towards the right and was not properly centered. So, using javascript, I will adjust the 
-      width of the login button such that it is equal to that of brandname. thus, the menu links will be aligned
-      properly at the center*/
-      /*I have just removed the classes and tweaks which were used to center the menu list, this is because it was
-      leading to duplication of the login, signup, logout buttons and led to redundancy. Now the below code is almost useless*/
-      function adjustLoginBtn(){
-        var brand = document.getElementsByClassName('navbar-brand');
-        var login = document.getElementsByClassName('login-btn');
-        brand[0].style.width = window.getComputedStyle(brand[0]).width;//because there are two buttons, Login and Sign Up
-        console.log("Login button adjusted");
+            {%endif%}
+            {%endwith%}
+            {%block content%}{%endblock%}
+          </div>
+          <script>
+            /*The login button's width was lesser than the width of brand name, due to this the menu list
+            was pulled towards the right and was not properly centered. So, using javascript, I will adjust the 
+            width of the login button such that it is equal to that of brandname. thus, the menu links will be aligned
+            properly at the center*/
+            /*I have just removed the classes and tweaks which were used to center the menu list, this is because it was
+            leading to duplication of the login, signup, logout buttons and led to redundancy. Now the below code is almost useless*/
+            function adjustLoginBtn(){
+              var brand = document.getElementsByClassName('navbar-brand');
+              var login = document.getElementsByClassName('login-btn');
+              brand[0].style.width = window.getComputedStyle(brand[0]).width;//because there are two buttons, Login and Sign Up
+              console.log("Login button adjusted");
+            }
+            
+            window.onload = function(){
+              var resetbuttons = document.getElementsByClassName('resetbutton')
+              console.log(resetbuttons.length)
+              for (var i = 0; i<resetbuttons.length;i++){
+                resetbuttons[i].addEventListener("click",function(){
+                  var resetbuttons = document.getElementsByClassName('resetbutton')
+                  
+                  var question = this.getAttribute('question');
+                  var qstring= question;
+                  document.getElementsByName(qstring)[0].checked=false;
+                  document.getElementsByName(qstring)[1].checked=false;
+                  document.getElementsByName(qstring)[2].checked=false;
+                  document.getElementsByName(qstring)[3].checked=false;
+                  
+                });
+              }
       }
       
-      window.onload = function(){
-        var resetbuttons = document.getElementsByClassName('resetbutton')
-        console.log(resetbuttons.length)
-        for (var i = 0; i<resetbuttons.length;i++){
-              resetbuttons[i].addEventListener("click",function(){
-                var resetbuttons = document.getElementsByClassName('resetbutton')
+      </script>
 
-                var question = this.getAttribute('question');
-                          var qstring= question;
-                          document.getElementsByName(qstring)[0].checked=false;
-                          document.getElementsByName(qstring)[1].checked=false;
-                          document.getElementsByName(qstring)[2].checked=false;
-                          document.getElementsByName(qstring)[3].checked=false;
-                         
-          });
-        }
-      }
-    
-    </script>
-    <script src="../static/bootstrap-5.2.0-dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+
+</body>
 </html>

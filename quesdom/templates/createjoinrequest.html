@@ -1,0 +1,38 @@
+{%extends "layout.html"%}
+{%block content%}
+<div class="content-section row p-2 pt-md-5 justify-content-center">
+    <div class="h4 fw-bolder d-flex justify-content-center text-secondary mt-3 mt-lg-0">Send joining request</div>
+
+    <div class="col-10 col-sm-6 col-md-4 ">
+
+        <form action="{{url_for('createjoinrequest')}}" method="POST">
+            
+            <div class="form-floating mb-4 mt-4">
+                {{form.hidden_tag()}}
+                {%if form.class_id.errors %}
+                {{form.class_id(class="form-control is-invalid",id="floatingClassroom",placeholder="Classroom")}}
+                <div class="invalid-feedback">
+                    {%for error in form.class_id.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.class_id(class="form-control", id="floatingClassroom", placeholder="Classroom")}}
+                {%endif%}
+                {{form.class_id.label(for="floatingName")}}
+
+            </div>
+            
+            <div class="py-3">
+                {{form.submit(class="btn btn-outline-primary px-3 py-2 w-100")}}
+            </div>
+
+        </form>
+        
+    </div>
+</div>
+
+
+
+    
+{%endblock%}

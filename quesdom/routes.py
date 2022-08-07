@@ -1,6 +1,7 @@
+from msilib.schema import Class
 from flask import render_template,flash,redirect, request, url_for
-from quesdom.forms import CreateClassForm, CreateQuizFromApiForm, RegistrationForm, TeacherRegistrationForm, StudentRegistrationForm, LoginForm,CreateQuizForm,CreateQuestionForm, UpdateQuestionForm
-from quesdom.models import Classrooms, Questions, Quizzes, Users, Choices, Answers, Teachers, Students, Classrooms
+from quesdom.forms import CreateClassForm, CreateQuizFromApiForm, RegistrationForm, TeacherRegistrationForm, StudentRegistrationForm, LoginForm,CreateQuizForm,CreateQuestionForm, UpdateQuestionForm, CreateJoinRequestForm
+from quesdom.models import Classrooms, Questions, Quizzes, Requests, StudentClassroom, Users, Choices, Answers, Teachers, Students, Classrooms
 from quesdom import app,bcrypt,db
 from flask_login import login_user,current_user,logout_user,login_required
 from datetime import date
@@ -66,8 +67,7 @@ def register_teacher():
     form = TeacherRegistrationForm()
     if form.validate_on_submit():
         hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = Users(username=form.username.data,email=form.email.data,password = hashed_pw, role='Player')
-        
+        user = Users(username=form.username.data,email=form.email.data,password = hashed_pw, role='Teacher')
         teacher = Teachers(name = form.name.data)
         db.session.add(teacher)
         db.session.flush()
@@ -84,13 +84,73 @@ def register_teacher():
     
 @app.route("/teacherclassrooms")
 def teacherclassrooms():
+    if not current_user.role == 'Teacher':
+        flash('You must be a teacher to access this feature!','danger')
+        return redirect('home')
     page = request.args.get('page',1,int)
     classes = Classrooms.query.filter_by(tr_id = current_user.tr_id).paginate(per_page = 5, page = page)
     return render_template('teacherclassrooms.html', title='Classrooms', classes = classes)
 
+@app.route("/studentclassrooms")
+def studentclassrooms():
+    page = request.args.get('page',1,int)
+    current_students_classes = []
+    for pair in StudentClassroom.query.filter_by(stu_id = current_user.stu_id):
+        current_students_classes.append(pair.class_id)
+    classes = Classrooms.query.filter(Classrooms.id.in_(current_students_classes)).paginate(per_page = 5, page = page)
+    return render_template('studentclassrooms.html', title='Classrooms', classes = classes)
+
+@app.route("/indexstudents")
+def indexstudents():
+    if not current_user.role == 'Teacher':
+        flash('You must be a teacher to access this feature!','danger')
+        return redirect('home')
+    students = StudentClassroom.query.filter_by(class_id = request.args.get("class_id"))
+    return render_template('indexstudents.html', title = 'Students', students = students)
+@app.route("/createjoinrequest",methods=['GET','POST'])
+def createjoinrequest():
+    if not current_user.stu_id:
+        flash('You must be a student to access this page', 'danger')
+        return redirect('home')
+    form = CreateJoinRequestForm()
+    if form.validate_on_submit():
+        req = Requests(stu_id = current_user.stu_id, class_id = form.class_id.data, status = False)
+        if not Classrooms.query.get(form.class_id.data):
+            flash('Invalid class ID, please make sure the class ID you enter is correct', 'danger')
+            return redirect('createjoinrequest')
+        db.session.add(req)
+        db.session.commit()
+        flash('Request submitted it might take some time for your teacher to accept the request!', 'success')
+        return redirect('studentclassrooms')
+    return render_template('createjoinrequest.html', title='Join a classroom', form = form)
+
+@app.route("/indexrequests")
+def indexrequests():
+    if not current_user.role == 'Teacher':
+        flash('You must be a teacher to access this feature!','danger')
+        return redirect('home')
+    requests = Requests.query.filter_by(class_id = request.args.get("class_id"), status = False)
+    return render_template('indexrequests.html', title = "Joining Requests", requests = requests)
+
+@app.route("/acceptrequest")
+def acceptrequest():
+    if not current_user.role == 'Teacher':
+        flash('You must be a teacher to access this feature!','danger')
+        return redirect('home')
+    req = Requests.query.get(request.args.get("request_id"))
+    req.status = True
+    stu_class = StudentClassroom(stu_id = req.stu_id , class_id = req.class_id)
+    db.session.add(stu_class)
+    db.session.commit()
+    flash('Student Added', 'success')
+    return redirect(url_for('indexrequests',class_id = req.class_id))
+
 @app.route("/createclassroom", methods=['GET', 'POST'])
 @login_required
 def createclassroom():
+    if not current_user.role == 'Teacher':
+        flash('You must be a teacher to access this feature!','danger')
+        return redirect('home')
     if not current_user.tr_id:
         flash('You must be a teacher to access this page', 'danger')
         return redirect('home')
@@ -110,7 +170,7 @@ def register_student():
     form = StudentRegistrationForm()
     if form.validate_on_submit():
         hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = Users(username=form.username.data,email=form.email.data,password = hashed_pw, role='Player')
+        user = Users(username=form.username.data,email=form.email.data,password = hashed_pw, role='Student')
         
         student = Students(name = form.name.data, semester = form.semester.data)
         db.session.add(student)
@@ -161,32 +221,55 @@ def account():
 @app.route('/indexquiz')
 @login_required
 def indexquiz():
-    if not current_user.role == 'Admin':
-        flash('You must be an admin to access this page!',category='info')
+    if not (current_user.role == 'Admin' or current_user.role == 'Teacher'):
+        flash('You are not authorized to access this page!',category='info')
         return redirect('home')
+
     if Quizzes.query.filter_by().count() == 0:
         flash('No quizzes found, please add a quiz!','info')
 
     page = request.args.get('page',1,int)
-    quizzes = Quizzes.query.paginate(per_page = 5,page=page)
+    quizzes = Quizzes.query.filter_by(author=current_user.id).paginate(per_page = 5,page=page)
 
     return render_template('indexquiz.html',title='All Quizzes',quizzes = quizzes)
 
 @app.route('/createquiz',methods=['GET','POST'])
 @login_required
 def createquiz():
-    if not current_user.role == 'Admin':
-        flash('You must be an admin to access this page!',category='info')
+    if not (current_user.role == 'Admin' or current_user.role == 'Teacher'):
+        flash('You are not authorized to access this page!',category='info')
         return redirect('home')
+
     form = CreateQuizForm()
+
+    
+    if(current_user.tr_id):
+        if not(request.args.get("class_id")): #this checks if the teacher is trying to add quiz without specifying a class which actually
+            #adds quizzes to the main Quiz page of website
+            flash('You must access this feature through a classroom!','danger')
+            return redirect('teacherclassrooms')
+        thisclass = Classrooms.query.get(request.args.get("class_id"))
+        if not thisclass: #this checks whether the class_id specified by the teacher actually exists in case someone
+            #tries to manipulate the url
+            flash('This classroom does not exist','danger')
+            return redirect('home')
+        if not thisclass.tr_id == current_user.tr_id:#this ensures that the quiz will be added to a classroom which
+            #belongs to the teacher
+            flash('This class does not belong to you','danger')
+            return redirect('home')
+        class_id = request.args.get("class_id")
+
     if form.validate_on_submit():
-        quiz = Quizzes(quiz_title=form.title.data,quiz_category=form.category.data,quiz_difficulty=form.difficulty.data,quiz_description=form.description.data,date_created=date.today(),author=current_user.id)
+        quiz = Quizzes(quiz_title=form.title.data,quiz_category=form.category.data,quiz_difficulty=form.difficulty.data,quiz_description=form.description.data,date_created=date.today(),author=current_user.id,timed=form.timed.data)
+        if(current_user.tr_id):
+            quiz.class_id = class_id
         db.session.add(quiz)
         db.session.commit()
         flash('Quiz created successfully',category='success')
+        if current_user.role == 'Teacher':
+            return redirect('teacherclassrooms')
         return redirect('indexquiz')
     return render_template('createquiz.html',title='Create a Quiz',form=form)
-
 
 @app.route('/deletequiz')
 @login_required
@@ -194,6 +277,7 @@ def deletequiz():
     if not current_user.role == 'Admin':
         flash('You must be an admin to access this page!',category='info')
         return redirect('home')
+    
     quiz = Quizzes.query.get(request.args.get('quiz_id'))
     db.session.delete(quiz)
     db.session.commit()
@@ -292,6 +376,8 @@ def playquiz():
     if Questions.query.filter_by(quiz_id=request.args.get('quiz_id')).count() == 0:
         flash('This quiz has no questions added currently, so you cannot play it!','danger')
         return redirect('allquizzes')
+    if not Quizzes.query.get(request.args.get('quiz_id')).timed:
+        return render_template('quiz.html', questions=questions,title='Playing Quiz',quiz_id=request.args.get('quiz_id'))
     return render_template('quiztimed.html',questions=questions,title='Playing Quiz',quiz_id=request.args.get('quiz_id'))
 
 #The python's random library cannot be imported inside a jinja template, so we need to create custom
@@ -466,3 +552,6 @@ def createquizfromapi():
         flash('Quiz created from API successfully','success')
         return redirect('indexquiz')
     return render_template('createquizfromapi.html',title='API Quiz Form', form=form)
+
+
+#below is a method to implement authorization
