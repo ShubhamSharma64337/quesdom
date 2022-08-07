@@ -1,0 +1,60 @@
+{% extends "layout.html"%}
+{% block content %}
+<div class="row overflow-auto p-4 p-md-2">
+    <div class="col" >
+        <table class="table bg-opacity-50 table-borderless bg-white mytable text-center rounded-1 overflow-hidden">
+            <tr class="table-warning" valign="middle">
+                <td>
+                    S. No.
+                </td>
+                <td>
+                    Class Id
+                </td>
+                <td>
+                    Class Name
+                </td>
+                <td class="text-end">
+                    <a class="btn btn-success" href="{{url_for('createclassroom')}}"><i class="bi bi-plus-circle"></i> Create Class</a>
+                </td>
+            </tr>
+            
+            {%for class in classes.items%}
+                <tr valign="middle" >
+                    <td>
+                        <!--This will use the page variable sent by the action method
+                        to create the serial numbers for the current page dynamically-->
+                        {{loop.index+((classes.page-1)*classes.per_page)}}
+                    </td>
+                    <td>
+                        {{class.id}}
+                    </td>
+                    <td>
+                        {{class.name}}
+                    </td>
+
+                    <td class="text-nowrap text-end">
+                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('createquestion')}}">Add Quizzes</a>
+                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('indexquestions')}}">View Students</a>
+                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('indexquestions')}}">Joining Requests</a>
+                    </td>
+                </tr>
+            {%endfor%}
+        </table>
+        <div class="page-links text-center">
+            {% for page_num in classes.iter_pages() %}
+            {% if page_num %}
+                {% if classes.page == page_num %}
+                    <a class="active btn btn-outline-primary btn-sm" href="{{url_for('teacherclassrooms',page=page_num)}}">{{page_num}}</a>
+
+                {% else %}
+                    <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacherclassrooms',page=page_num)}}">{{page_num}}</a>
+                {% endif %}
+            {% else %}
+                <span class="btn btn-outline-primary btn-sm">...</span>
+
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div> 
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{%extends "layout.html"%}
+{%block content%}
+<div class="content-section row p-2 pt-md-5 justify-content-center">
+    <div class="col-10 col-sm-6 col-md-4">
+        <form action="" method="POST">
+            <div class="form-floating mb-4 mt-4">
+                {{form.hidden_tag()}}
+                {%if form.name.errors %}
+                {{form.name(class="form-control is-invalid",id = "floatingName", placeholder="Name")}}
+                <div class="invalid-feedback">
+                    {%for error in form.name.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.name(class="form-control",id = "floatingName",placeholder="Name")}}
+                {%endif%}
+                {{form.name.label(class="control-label",for="floatingName")}}
+            </div>
+            
+            <div class="form-buttons d-flex justify-content-between">
+                <a class="btn btn-secondary" href="{{url_for('indexquiz')}}">Back</a>
+                {{form.submit(class='btn btn-primary')}}
+            </div>
+        </form>
+    </div>
+
+</div>
+
+{% endblock %}

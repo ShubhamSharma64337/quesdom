@@ -1,6 +1,6 @@
 from flask import render_template,flash,redirect, request, url_for
-from quesdom.forms import CreateQuizFromApiForm, RegistrationForm, TeacherRegistrationForm, StudentRegistrationForm, LoginForm,CreateQuizForm,CreateQuestionForm, UpdateQuestionForm
-from quesdom.models import Questions, Quizzes, Users, Choices, Answers, Teachers, Students
+from quesdom.forms import CreateClassForm, CreateQuizFromApiForm, RegistrationForm, TeacherRegistrationForm, StudentRegistrationForm, LoginForm,CreateQuizForm,CreateQuestionForm, UpdateQuestionForm
+from quesdom.models import Classrooms, Questions, Quizzes, Users, Choices, Answers, Teachers, Students, Classrooms
 from quesdom import app,bcrypt,db
 from flask_login import login_user,current_user,logout_user,login_required
 from datetime import date
@@ -34,8 +34,9 @@ def login():
                     if current_user.role == "Admin":
                         return redirect('indexquiz')
                     else:
-                        return redirect('account')
-                return redirect(next_page) if next_page else redirect('account')
+                        if current_user.tr_id:
+                            return redirect('teacherclassrooms')
+                        return redirect('allquizzes')
         else:
             flash('Login unsuccessful, please check email and password!','danger')
     return render_template('login.html',title='Login', form=form)
@@ -81,6 +82,26 @@ def register_teacher():
 
     return render_template('registerteacher.html',title='Register', form=form)
     
+@app.route("/teacherclassrooms")
+def teacherclassrooms():
+    page = request.args.get('page',1,int)
+    classes = Classrooms.query.filter_by(tr_id = current_user.tr_id).paginate(per_page = 5, page = page)
+    return render_template('teacherclassrooms.html', title='Classrooms', classes = classes)
+
+@app.route("/createclassroom", methods=['GET', 'POST'])
+@login_required
+def createclassroom():
+    if not current_user.tr_id:
+        flash('You must be a teacher to access this page', 'danger')
+        return redirect('home')
+    form = CreateClassForm()
+    if form.validate_on_submit():
+        classroom = Classrooms(name=form.name.data,tr_id=current_user.tr_id)
+        db.session.add(classroom)
+        db.session.commit()
+        flash('Class created!', 'success')
+        return redirect('teacherclassrooms')
+    return render_template('createclassroom.html', title='Create a Classroom', form = form)
 
 @app.route("/registerstudent", methods=['GET', 'POST'])
 def register_student():
@@ -271,7 +292,7 @@ def playquiz():
     if Questions.query.filter_by(quiz_id=request.args.get('quiz_id')).count() == 0:
         flash('This quiz has no questions added currently, so you cannot play it!','danger')
         return redirect('allquizzes')
-    return render_template('quiz.html',questions=questions,title='Playing Quiz',quiz_id=request.args.get('quiz_id'))
+    return render_template('quiztimed.html',questions=questions,title='Playing Quiz',quiz_id=request.args.get('quiz_id'))
 
 #The python's random library cannot be imported inside a jinja template, so we need to create custom
 #filter to shuffle the choices inside a template, that's why i have created this function
@@ -291,7 +312,7 @@ def submitquiz():
     questions = Questions.query.filter_by(quiz_id=request.form.get('quiz_id'))
     answers = []
     choices = []
-    
+    answercount = 0
     for question in questions:
         try:
             selected_choice = request.form[f'{question.id}']
@@ -299,15 +320,18 @@ def submitquiz():
             answer = Answers(user_id=current_user.id,question_id=question.id,selected_choice= "Not Attempted",attempt_no=this_attempt)
 
         else:
+            answercount = answercount + 1
             answer = Answers(user_id=current_user.id,question_id=question.id,selected_choice= request.form[f'{question.id}'],attempt_no=this_attempt)
 
         answers.append(answer)
         choices.append(question.choices)
         db.session.add(answer)
         db.session.commit()
+    
+    correct_answercount = get_correct_answercount(quiz_id=request.form.get('quiz_id'),attempt=this_attempt)
     flash('You finished the quiz!','success')
     percentage=calc_percentage(quiz_id=request.form.get('quiz_id'),attempt=this_attempt)
-    return render_template('result.html',percentage=percentage,answers=answers,questions=questions,choices=choices)
+    return render_template('result.html',title="Result",correct_answercount = correct_answercount, percentage=int(percentage),answers=answers,answercount = answercount, questions=questions,choices=choices)
 
 #This method takes the quiz_id as an argument and returns the attempt number for the new quiz submitted by the 
 #currently logged in user
@@ -350,6 +374,20 @@ def calc_percentage(quiz_id,attempt):
     
     percentage = (score/max_score)*100
     return percentage
+
+#This function returns the number of attempted answers which are correct in a quiz for a particular attempt
+def get_correct_answercount(quiz_id,attempt):
+    quiz = Quizzes.query.get(quiz_id)
+    correct_answercount = 0
+    for question in quiz.questions:
+        answer = Answers.query.filter_by(user_id=current_user.id,question_id=question.id,attempt_no=attempt).first()
+        if answer == None:
+            continue
+        correct_choice = question.choices.correct_choice
+        selected_choice = answer.selected_choice
+        if correct_choice == selected_choice:
+            correct_answercount = correct_answercount + 1
+    return correct_answercount
 
 @app.route('/myquizzes')
 def myquizzes():

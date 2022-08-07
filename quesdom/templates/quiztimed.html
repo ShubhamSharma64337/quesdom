@@ -1,0 +1,122 @@
+{%extends "layout.html"%}
+{%block content%}
+<div class="content-section row p-2 pt-md-5 justify-content-center">
+  <div class="col-10 col-sm-8 my-3">
+    <form action="/submitquiz" method="POST" class="row">
+      <input type="hidden" name="quiz_id" value="{{quiz_id}}"/>
+      <div class="all-cards p-0 m-0 border rounded-3 overflow-hidden shadow">
+        <span id="progress" class="d-block"></span>
+        {%for question in questions%} 
+        {% if loop.index == 1%}
+        {% set dprop = "" %}
+        {% else %} 
+        {% set dprop = "d-none"%}
+        {% endif %}
+        <div class="question-card {{dprop}} position-relative" data-index="{{loop.index}}">
+          
+          <div class="card-header border-bottom p-5 bg-white text-center">
+            <div class="details d-flex justify-content-between align-items-center">
+              <span class="qcount border px-3 py-2 rounded-5 bg-light">
+                {{loop.index}} of {{questions.count()}} 
+              </span>
+              <span class="timer border px-3 py-2 rounded-5 bg-light">
+                <span class="duration">{{question.duration}}</span>
+                <i class="ms-2 fs-5 bi bi-stopwatch-fill"></i>
+              </span>
+            </div>
+            <br>
+            <br>
+            <span class="fs-5">
+              {{question.question_statement}}
+            </span>
+            </div>
+            <!--The below block of code is using our custom jinja filter named filter_shuffle to shuffle
+            the values of the choices which are shown on the form-->
+            {% set choice_values = [] %}
+            {% set choice_values = choice_values + [question.choices.correct_choice] %}
+            {% set choice_values = choice_values + [question.choices.incorrect_choice_1] %}
+            {% set choice_values = choice_values + [question.choices.incorrect_choice_2] %}
+            {% set choice_values = choice_values + [question.choices.incorrect_choice_3] %}
+            {%set choice_values = choice_values|filter_shuffle %}
+            <div class="card-body px-4 py-3 row">
+
+              <div class="col-12 col-md-6">
+                
+                <input type="radio" class="btn-check" name="{{question.id}}" value="{{choice_values[0]}}" id="{{loop.index}}_option1" autocomplete="off">
+                <label class="btn btn-outline-secondary btn-lg w-100 my-2" for="{{loop.index}}_option1">{{choice_values[0]}}</label>
+              </div>
+              
+              <div class="col-12 col-md-6">
+                
+                <input type="radio" class="btn-check" name="{{question.id}}" value="{{choice_values[1]}}" id="{{loop.index}}_option2" autocomplete="off">
+                <label class="btn btn-outline-secondary btn-lg w-100 my-2" for="{{loop.index}}_option2">{{choice_values[1]}}</label>
+                
+              </div>
+              
+              <div class="col-12 col-md-6">
+                
+                <input type="radio" class="btn-check" name="{{question.id}}" value="{{choice_values[2]}}" id="{{loop.index}}_option3" autocomplete="off">
+                <label class="btn btn-outline-secondary btn-lg w-100 my-2" for="{{loop.index}}_option3">{{choice_values[2]}}</label>
+                
+              </div>
+
+              <div class="col-12 col-md-6">
+                
+                <input type="radio" class="btn-check" name="{{question.id}}" value="{{choice_values[3]}}" id="{{loop.index}}_option4" autocomplete="off">
+                <label class="btn btn-outline-secondary btn-lg w-100 my-2" for="{{loop.index}}_option4">{{choice_values[3]}}</label>
+                
+                
+              </div>
+              <div class="col-12 d-flex my-2 justify-content-between">
+                <div class="btn btn-outline-light resetbutton" question="{{question.id}}" question="{{question.id}}"><i class="bi bi-arrow-clockwise fs-3 text-danger"></i></div>
+                {% if loop.index == questions.count() %}
+                  <input type="submit" class="px-3 btn btn-primary final-submit d-none" value="Submit"/>
+                {% endif %}
+              </div>
+                
+            </div>
+        </div>
+        {%endfor%}  
+      </div>
+    </form>
+  </div>
+  <script>
+    var i = 0;
+    var timers = document.getElementsByClassName("duration");
+    setInterval(() => {
+      var timer_duration = timers[i];
+      timer_duration.innerHTML = timer_duration.innerHTML - 1;
+      if(timer_duration.innerHTML <= 4){
+        timers[i].parentElement.classList.remove("bg-light");
+        timers[i].parentElement.classList.add("bg-danger");
+        timers[i].parentElement.classList.add("text-white");
+      }
+      if(timer_duration.innerHTML < 0){
+        clickNext();
+        i++;
+      }
+    }, 500);
+
+    //The clickNext function makes the current question's display property none and
+    // the removes d-none from the next question
+    function clickNext(){
+      let all_questions = document.getElementsByClassName("question-card");
+      let increment = 20;
+      for(var i = 0; i<all_questions.length; i++){
+        if(i==all_questions.length-1){
+          let sub_button = document.getElementsByClassName("final-submit")[0];
+          sub_button.click();
+        }
+        if(!all_questions[i].classList.contains("d-none")){
+          increment = document.getElementsByClassName("question-card")[i].offsetWidth / all_questions.length;
+          document.getElementById("progress").style.width = `${document.getElementById("progress").offsetWidth + increment}px`;
+          all_questions[i].classList.add("d-none");
+          all_questions[i+1].classList.remove("d-none");
+          break;
+        }
+        
+      }
+    }
+  </script>
+</div>
+{%endblock%}

@@ -1,8 +1,8 @@
 {%extends "layout.html"%}
 {%block content%}
-    <div class="content-section container row justify-content-center">
-        
-        <div class="col-12 col-lg-6 d-flex flex-lg-row flex-column justify-content-center align-items-center gap-3" style="height: 80vh;">
+    <div class="content-section container row justify-content-center" style="height: 80vh;">
+        <div class="col-12 d-flex justify-content-center align-items-end h4 fw-bold">Choose your account type</div>
+        <div class="col-12 col-lg-6 d-flex flex-lg-row flex-column justify-content-center align-items-center gap-3 gap-lg-1" >
             <a class="text-decoration-none text-dark mycard" href = "{{url_for('register_teacher')}}">
                 <div class="row">
                     <div class="col d-flex flex-lg-column justify-content-end">
@@ -39,6 +39,12 @@
                     </div>
                 </div>
             </a>
+            
+        </div>
+        <div class="text-center pt-3">
+            <div class="small">
+                <span class="text-muted">Already have an account? </span><a href="{{url_for('login')}}" class="fw-bold text-decoration-none">Sign In</a>
+            </div>
             
         </div>
     </div>

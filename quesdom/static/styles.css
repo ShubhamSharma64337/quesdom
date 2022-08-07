@@ -88,3 +88,18 @@
 .mycard:hover{
     transform: scale(1.1);
 }
+
+.timer{
+    transition: 0.3s;
+}
+
+.qcount{
+    transition: 0.3s;
+}
+
+#progress{
+    width: 0px; 
+    height: 10px; 
+    background-color: var(--main-color);
+    transition: 0.5s;
+}

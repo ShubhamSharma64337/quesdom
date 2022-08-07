@@ -78,6 +78,10 @@ class CreateQuizForm(FlaskForm):
     description = TextAreaField('Description',validators=[DataRequired(),Length(min=2,max=200)])
     submit = SubmitField('Submit')
 
+class CreateClassForm(FlaskForm):
+    name = StringField('Classroom Name', validators=[DataRequired(),Length(min=2,max=30)])
+    submit = SubmitField('Submit')
+
 
 class CreateQuestionForm(FlaskForm):
     statement = StringField('Question Statement',validators=[DataRequired()])
