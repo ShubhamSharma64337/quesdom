@@ -81,6 +81,10 @@
     </form>
   </div>
   <script>
+    //the below lines of code set the initial width of the progress bar
+    let qstns = document.getElementsByClassName("question-card");
+    var initwidth = document.getElementsByClassName("question-card")[0].offsetWidth / qstns.length;
+    document.getElementById("progress").style.width = `${initwidth}px`;
     var i = 0;
     var timers = document.getElementsByClassName("duration");
     setInterval(() => {

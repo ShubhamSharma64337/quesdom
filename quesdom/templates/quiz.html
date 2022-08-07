@@ -5,8 +5,9 @@
     <form action="/submitquiz" method="POST" class="row">
       <input type="hidden" name="quiz_id" value="{{quiz_id}}"/>
       
-      <div class="all-cards">
-        <div class="mb-3 col-12 justify-content-between d-flex">
+      <div class="all-cards p-0 m-0 border rounded-3 overflow-hidden shadow">
+        <span id="progress" class="mb-3 d-block"></span>
+        <div class="mb-3 col-12 justify-content-between d-flex px-3">
           <button type="button" class="btn btn-primary my-previous-button disabled"  data-page="1">Previous</button>
           <button type="button" class="btn btn-primary my-next-button"  data-page="2">Next</button>
         </div>
@@ -16,8 +17,8 @@
         {% else %} 
           {% set dprop = "d-none"%}
         {% endif %}
-        <div class="card question-card p-0 my-3 {{dprop}} position-relative" data-index="{{loop.index}}">
-          <div class="card-header p-5 bg-white text-center">
+        <div class="question-card {{dprop}} position-relative" data-index="{{loop.index}}">
+          <div class="card-header border-bottom p-5 bg-white text-center">
             <span class="border px-3 py-2 rounded-5 bg-light">
               {{loop.index}} of {{questions.count()}}
             </span>
@@ -36,7 +37,7 @@
                     {% set choice_values = choice_values + [question.choices.incorrect_choice_2] %}
                     {% set choice_values = choice_values + [question.choices.incorrect_choice_3] %}
                     {%set choice_values = choice_values|filter_shuffle %}
-                    <div class="card-body row">
+                    <div class="card-body px-4 py-3 row">
 
                       <div class="col-12 col-md-6">
                         
@@ -94,6 +95,11 @@
                       //   }
                       //   })
                       // }
+                      
+                      //the below lines of code set the initial width of the progress bar
+                      let qstns = document.getElementsByClassName("question-card");
+                      var initwidth = document.getElementsByClassName("question-card")[0].offsetWidth / qstns.length;
+                      document.getElementById("progress").style.width = `${initwidth}px`;
 
                       function next(){
                         console.log("Next Clicked");
@@ -107,6 +113,8 @@
                           }
                           if(!all_questions[i].classList.contains("d-none")){
                             document.getElementsByClassName("my-previous-button")[0].classList.remove("disabled");
+                            increment = document.getElementsByClassName("question-card")[i].offsetWidth / all_questions.length;
+                            document.getElementById("progress").style.width = `${document.getElementById("progress").offsetWidth + increment}px`;
                             all_questions[i].classList.add("d-none");
                             all_questions[i+1].classList.remove("d-none");
                             break;
@@ -127,6 +135,10 @@
                               document.getElementsByClassName("my-previous-button")[0].classList.add("disabled"); 
                             }
                             document.getElementsByClassName("my-next-button")[0].classList.remove("disabled");
+
+                            increment = document.getElementsByClassName("question-card")[i].offsetWidth / all_questions.length;
+                            document.getElementById("progress").style.width = `${document.getElementById("progress").offsetWidth - increment}px`;
+
                             all_questions[i].classList.add("d-none");
                             all_questions[i-1].classList.remove("d-none");
                             break;
