@@ -1,6 +1,9 @@
-{% extends "layout.html"%}
+{%extends "teacher_layout.html"%}
 {% block content %}
-<div class="row overflow-auto p-4 p-md-2">
+<div class="row overflow-auto p-4 p-md-2 justify-content-center align-items-center">
+    {%if classes.query.count() == 0 %}
+    <a href="{{url_for('teacher_createclassroom')}}" class="col-10 col-md-6 btn btn-lg btn-light p-5 d-flex border justify-content-center mt-5 align-items-center"><i class="me-2 bi bi-plus-circle h1 text-secondary"></i>Create a Classroom</a>
+    {%else%}
     <div class="col" >
         <table class="table bg-opacity-50 table-borderless bg-white mytable text-center rounded-1 overflow-hidden">
             <tr class="table-warning" valign="middle">
@@ -14,7 +17,7 @@
                     Class Name
                 </td>
                 <td class="text-end">
-                    <a class="btn btn-success" href="{{url_for('createclassroom')}}"><i class="bi bi-plus-circle"></i> Create Class</a>
+                    <a class="btn btn-success" href="{{url_for('teacher_createclassroom')}}"><i class="bi bi-plus-circle"></i> Create Class</a>
                 </td>
             </tr>
             
@@ -33,22 +36,23 @@
                     </td>
 
                     <td class="text-nowrap text-end">
-                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('createquiz', class_id = class.id)}}">Add Quiz</a>
-                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('indexquiz', class_id = class.id)}}">View Quizzes</a>
-                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('indexstudents', class_id = class.id)}}">View Students</a>
-                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('indexrequests', class_id = class.id)}}">Joining Requests</a>
+                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacher_createquiz', class_id = class.id)}}">Add Quiz</a>
+                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacher_indexquiz', class_id = class.id)}}">View Quizzes</a>
+                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacher_indexstudents', class_id = class.id)}}">View Students</a>
+                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacher_indexrequests', class_id = class.id)}}">Joining Requests</a>
                     </td>
                 </tr>
             {%endfor%}
         </table>
+        
         <div class="page-links text-center">
             {% for page_num in classes.iter_pages() %}
             {% if page_num %}
                 {% if classes.page == page_num %}
-                    <a class="active btn btn-outline-primary btn-sm" href="{{url_for('teacherclassrooms',page=page_num)}}">{{page_num}}</a>
+                    <a class="active btn btn-outline-primary btn-sm" href="{{url_for('teacher_indexclassrooms',page=page_num)}}">{{page_num}}</a>
 
                 {% else %}
-                    <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacherclassrooms',page=page_num)}}">{{page_num}}</a>
+                    <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacher_indexclassrooms',page=page_num)}}">{{page_num}}</a>
                 {% endif %}
             {% else %}
                 <span class="btn btn-outline-primary btn-sm">...</span>
@@ -56,6 +60,7 @@
             {% endif %}
         {% endfor %}
         </div>
-    </div> 
+       </div> 
+    {%endif%}
 </div>
 {% endblock %}

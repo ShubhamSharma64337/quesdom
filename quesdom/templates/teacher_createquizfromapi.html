@@ -1,0 +1,82 @@
+{%extends "teacher_layout.html"%}
+{% block content %}
+
+<div class="content-section row p-2 pt-md-5 justify-content-center">
+    <div class="col-10 col-sm-6 col-md-4">
+        <form action="" method="POST">
+            <div class="form-floating mb-4 mt-4">
+                {{form.hidden_tag()}}
+                {%if form.title.errors %}
+                {{form.title(class="form-control is-invalid",id = "floatingTitle", placeholder="Title")}}
+                <div class="invalid-feedback">
+                    {%for error in form.title.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.title(class="form-control",id = "floatingTitle",placeholder="Title")}}
+                {%endif%}
+                {{form.title.label(class="control-label",for="floatingTitle")}}
+            </div>
+            <div class="form-floating mb-4 mt-4">
+                {%if form.category.errors %}
+                {{form.title(class="form-control is-invalid",id = "floatingCategory", placeholder="Category")}}
+                <div class="invalid-feedback">
+                    {%for error in form.category.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.category(class="form-select",id = "floatingCategory",placeholder="Category")}}
+                {%endif%}
+                {{form.category.label(class="control-label",for="floatingCategory")}}
+            </div>
+            <div class="form-floating mb-4 mt-4">
+                {%if form.difficulty.errors %}
+                {{form.title(class="form-select is-invalid",id = "floatingSelect")}}
+                <div class="invalid-feedback">
+                    {%for error in form.difficulty.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.difficulty(class="form-select",id = "floatingSelect")}}
+                {%endif%}
+                {{form.difficulty.label(class="control-label",for="floatingSelect")}}
+            </div>
+            <div class="form-floating mb-4 mt-4">
+                {%if form.errors %}
+                {{form.description(class="form-control is-invalid",style="height: 10rem;",id = "floatingDescription", placeholder="Description")}}
+                <div class="invalid-feedback">
+                    {%for error in form.description.errors%}
+                    <span>{{ error }}</span>
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.description(class="form-control",style="height: 10rem;",id = "floatingDescription",placeholder="Description")}}
+                {%endif%}
+                {{form.description.label(class="control-label",for="floatingDescription")}}
+            </div>
+            <div class="form-floating mb-4 mt-4">
+                {%if form.errors %}
+                {{form.numques(class="form-control is-invalid",id = "floatingNumques", placeholder="Number of questions")}}
+                <div class="invalid-feedback">
+                    {%for error in form.numques.errors%}
+                    <span>{{ error }}</span>
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.numques(class="form-control",id = "floatingNumques",placeholder="Number of Questions")}}
+                {%endif%}
+                {{form.numques.label(class="control-label",for="floatingNumques")}}
+            </div>
+            <div class="form-buttons d-flex justify-content-between">
+                <a class="btn btn-secondary" href="{{url_for('indexquiz')}}">Back</a>
+                {{form.submit(class='btn btn-primary')}}
+            </div>
+        </form>
+    </div>
+
+</div>
+
+{%endblock%}

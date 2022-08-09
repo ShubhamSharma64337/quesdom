@@ -1,4 +1,4 @@
-{%extends "layout.html"%}
+{%extends "teacher_layout.html"%}
 {%block content%}
 <div class="content-section row p-2 pt-md-5 justify-content-center">
     <div class="col-10 col-sm-6 col-md-4">
@@ -19,7 +19,7 @@
             </div>
             
             <div class="form-buttons d-flex justify-content-between">
-                <a class="btn btn-secondary" href="{{url_for('teacherclassrooms')}}">Back</a>
+                <a class="btn btn-secondary" href="{{url_for('teacher_indexclassrooms')}}">Back</a>
                 {{form.submit(class='btn btn-primary')}}
             </div>
         </form>

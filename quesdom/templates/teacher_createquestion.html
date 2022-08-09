@@ -1,0 +1,94 @@
+{%extends "teacher_layout.html"%}
+{%block content%}
+<div class="content-section row p-2 pt-md-5 justify-content-center">
+    <div class="col-10 col-sm-6 col-md-4">
+        <form action="{{url_for('createquestion',quiz_id=quiz_id)}}", method="POST">
+            <div class="form-floating mb-4 mt-4">
+                {{form.hidden_tag()}}
+                {%if form.statement.errors %}
+                {{form.statement(class="form-control is-invalid",id = "floatingStatement", placeholder="Statement")}}
+                <div class="invalid-feedback">
+                    {%for error in form.statement.errors%}
+                    <span>{{error}}</span>Duration
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.statement(class="form-control",id = "floatingStatement",placeholder="Statement")}}
+                {%endif%}
+                {{form.statement.label(class="control-label",for="floatingStatement")}}
+            </div>
+            <div class="form-floating mb-4 mt-4">
+                {%if form.duration.errors %}
+                {{form.duration(class="form-control is-invalid",id = "floatingDuration", placeholder="Duration")}}
+                <div class="invalid-feedback">
+                    {%for error in form.duration.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.duration(class="form-control",id = "floatingDuration",placeholder="Duration")}}
+                {%endif%}
+                {{form.duration.label(class="control-label",for="floatingDuration")}}
+            </div>
+            <div class="form-floating mb-4 mt-4">
+                {%if form.duration.errors %}
+                {{form.correct_choice(class="form-control is-invalid",id = "floatingCorrect_choice", placeholder="Correct_choice")}}
+                <div class="invalid-feedback">
+                    {%for error in form.correct_choice.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.correct_choice(class="form-control",id = "floatingCorrect_choice",placeholder="Correct_choice")}}
+                {%endif%}
+                {{form.correct_choice.label(class="control-label",for="floatingCorrect_choice")}}
+            </div>
+            <div class="form-floating mb-4 mt-4">
+                {%if form.incorrect_choice_1.errors %}
+                {{form.incorrect_choice_1(class="form-control is-invalid",id = "floatingIncorrectChoice1", placeholder="Incorrect Choice 1")}}
+                <div class="invalid-feedback">
+                    {%for error in form.incorrect_choice_1.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.incorrect_choice_1(class="form-control",id = "floatingIncorrectChoice1",placeholder="Incorrect Choice 1")}}
+                {%endif%}
+                {{form.incorrect_choice_1.label(class="control-label",for="floatingIncorrectChoice1")}}
+            </div>
+            <div class="form-floating mb-4 mt-4">
+                {%if form.incorrect_choice_1.errors %}
+                {{form.incorrect_choice_2(class="form-control is-invalid",id = "floatingIncorrectChoice2", placeholder="Incorrect Choice 2")}}
+                <div class="invalid-feedback">
+                    {%for error in form.incorrect_choice_2.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.incorrect_choice_2(class="form-control",id = "floatingIncorrectChoice2",placeholder="Incorrect Choice 2")}}
+                {%endif%}
+                {{form.incorrect_choice_2.label(class="control-label",for="floatingIncorrectChoice2")}}
+            </div>
+            <div class="form-floating mb-4 mt-4">
+                {%if form.incorrect_choice_3.errors %}
+                {{form.incorrect_choice_3(class="form-control is-invalid",id = "floatingIncorrectChoice3", placeholder="Incorrect Choice 3")}}
+                <div class="invalid-feedback">
+                    {%for error in form.incorrect_choice_3.errors%}
+                    <span>{{error}}</span>
+                    {%endfor%}
+                </div>
+                {%else%}
+                {{form.incorrect_choice_3(class="form-control",id = "floatingIncorrectChoice3",placeholder="Incorrect Choice 3")}}
+                {%endif%}
+                {{form.incorrect_choice_3.label(class="control-label",for="floatingIncorrectChoice3")}}
+            </div>
+            <div class="form-buttons d-flex justify-content-between">
+                <a class="btn btn-secondary" href="{{url_for('teacher_indexquiz')}}">Back</a>
+                {{form.submit(class='btn btn-primary')}}
+            </div>
+        </form>
+    </div>
+
+</div>
+
+{% endblock %}

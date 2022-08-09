@@ -1,4 +1,4 @@
-{%extends "layout.html"%}
+{%extends "teacher_layout.html"%}
 {%block content%}
 <div class="row overflow-auto p-4 p-md-2">
     <div class="col" >
@@ -26,8 +26,8 @@
                     Timed
                 </td>
                 <td class="text-end">
-                    <a class="btn btn-success" href="{{url_for('createquizfromapi')}}"><i class="bi bi-plus-circle"></i> Add Using API</a>
-                    <a class="btn btn-success" href="{{url_for('createquiz')}}"><i class="bi bi-plus-circle"></i> Add</a>
+                    <a class="btn btn-success" href="{{url_for('teacher_createquizfromapi')}}"><i class="bi bi-plus-circle"></i> Add Using API</a>
+                    <a class="btn btn-success" href="{{url_for('teacher_createquiz')}}"><i class="bi bi-plus-circle"></i> Add</a>
                 </td>
             </tr>
             
@@ -58,9 +58,9 @@
                         {{quiz.timed}}
                     </td>
                     <td class="text-nowrap text-end">
-                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('createquestion',quiz_id=quiz.id)}}">Add Questions</a>
-                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('indexquestions',quiz_id=quiz.id)}}">View Questions</a>
-                        <a class="btn btn-outline-danger btn-sm" href="{{url_for('deletequiz')}}" data-bs-quizid = {{quiz.id}} data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Quiz</a>
+                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacher_createquestion',quiz_id=quiz.id)}}">Add Questions</a>
+                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacher_indexquestions',quiz_id=quiz.id)}}">View Questions</a>
+                        <a class="btn btn-outline-danger btn-sm" href="{{url_for('teacher_deletequiz')}}" data-bs-quizid = {{quiz.id}} data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Quiz</a>
                     </td>
                 </tr>
             {%endfor%}
@@ -69,10 +69,10 @@
             {% for page_num in quizzes.iter_pages() %}
             {% if page_num %}
                 {% if quizzes.page == page_num %}
-                    <a class="active btn btn-outline-primary btn-sm" href="{{url_for('indexquiz',page=page_num)}}">{{page_num}}</a>
+                    <a class="active btn btn-outline-primary btn-sm" href="{{url_for('teacher_indexquiz',page=page_num)}}">{{page_num}}</a>
 
                 {% else %}
-                    <a class="btn btn-outline-primary btn-sm" href="{{url_for('indexquiz',page=page_num)}}">{{page_num}}</a>
+                    <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacher_indexquiz',page=page_num)}}">{{page_num}}</a>
                 {% endif %}
             {% else %}
                 <span class="btn btn-outline-primary btn-sm">...</span>

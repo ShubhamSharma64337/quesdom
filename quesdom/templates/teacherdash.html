@@ -1,0 +1,63 @@
+{%extends "teacher_layout.html"%}
+{%block content%}
+<div class="content-section row gap-0 pt-md-5">
+    <div class="col-12 p-2">
+        {%if current_user.role == 'Player' %}
+        <div class="card">
+            <div class="card-header">
+                Statistics
+            </div>
+            <div class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-4">
+                            <div class="h2 text-center">Quizzes Played</div>
+                            <div class="body d-flex justify-content-center align-items-center h1">
+                                {{q_played}}
+                            </div>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        {%endif%}
+    </div>
+    <div class="col-12 col-sm-6 col-md-6 p-2">
+        <div class="card profile-card">
+            <div class="card-header">
+                Profile
+            </div>
+            <div class="card-body">
+                <div class="p-3">
+                    <span>Username</span> <span class="form-control d-inline">{{current_user.username}}</span>
+                </div>
+                <div class="p-3">
+                    <span>E-mail</span> <span class="form-control d-inline">{{current_user.email}}</span>
+                </div>
+                <div class="p-3">
+                    <span>Role</span> <span class="form-control d-inline">{{current_user.role}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-6 p-2">
+        <div class="card account-card">
+            <div class="card-header">
+                Account Settings
+            </div>
+            <div class="card-body">
+                <div class="p-3">
+                    <a class="btn btn-outline-danger w-100" href="#">Change Password</a>
+                </div>
+                <div class="p-3">
+                    <a class="btn btn-outline-danger w-100" href="#">Delete Account</a>
+                </div>
+                <div class="p-3">
+                    <a class="btn btn-outline-secondary w-100" href="#">Reset Account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+</div>
+{% endblock %}

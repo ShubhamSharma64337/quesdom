@@ -1,6 +1,5 @@
-{% extends "layout.html" %}
-{% block content %}
-
+{%extends "admin_layout.html"%}
+{%block content%}
 <div class="content-section row p-2 pt-md-5 justify-content-center">
     <div class="col-10 col-sm-6 col-md-4">
         <form action="" method="POST">
@@ -27,7 +26,7 @@
                     {%endfor%}
                 </div>
                 {%else%}
-                {{form.category(class="form-select",id = "floatingCategory",placeholder="Category")}}
+                {{form.category(class="form-control",id = "floatingCategory",placeholder="Category")}}
                 {%endif%}
                 {{form.category.label(class="control-label",for="floatingCategory")}}
             </div>
@@ -57,21 +56,12 @@
                 {%endif%}
                 {{form.description.label(class="control-label",for="floatingDescription")}}
             </div>
-            <div class="form-floating mb-4 mt-4">
-                {%if form.errors %}
-                {{form.numques(class="form-control is-invalid",id = "floatingNumques", placeholder="Number of questions")}}
-                <div class="invalid-feedback">
-                    {%for error in form.numques.errors%}
-                    <span>{{ error }}</span>
-                    {%endfor%}
-                </div>
-                {%else%}
-                {{form.numques(class="form-control",id = "floatingNumques",placeholder="Number of Questions")}}
-                {%endif%}
-                {{form.numques.label(class="control-label",for="floatingNumques")}}
+            <div class="form-check my-4">
+                {{form.timed.label(class="control-label")}}
+                {{form.timed(class="form-check-input p-1")}}
             </div>
             <div class="form-buttons d-flex justify-content-between">
-                <a class="btn btn-secondary" href="{{url_for('indexquiz')}}">Back</a>
+                <a class="btn btn-secondary" href="{{url_for('admin_indexquiz')}}">Back</a>
                 {{form.submit(class='btn btn-primary')}}
             </div>
         </form>
@@ -79,4 +69,4 @@
 
 </div>
 
-{%endblock%}
+{% endblock %}

@@ -19,7 +19,7 @@
         </div>
         {%if not current_user.is_authenticated %}
         <div class="btn-part text-center text-sm-end">
-          <a style="border: 1px solid var(--main-color); background-color: var(--main-color);  transition: 0.2s;" class="login-btn-inner py-2 px-4 my-3 btn text-dark fs-5 rounded-1" href="{{url_for('register')}}">Join Now</a>
+          <a style="border: 1px solid var(--main-color); background-color: var(--main-color);  transition: 0.2s;" class="login-btn-inner py-2 px-4 my-3 btn text-dark fs-5 rounded-1" href="{{url_for('registertype')}}">Join Now</a>
         </div>
         {%endif%}
       </div>

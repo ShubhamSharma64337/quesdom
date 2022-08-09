@@ -14,9 +14,9 @@
                     <div class="w-100 d-flex align-items-center justify-content-between">
                         <a href="{{url_for('playquiz',quiz_id=quiz.id)}}" class="fw-bold fs-5 text-success play-link">Play Now</a>
                         {%if quiz.timed %}
-                            <a href="#"  data-bs-toggle="tooltip" data-bs-title="This is a quiz with timer"><i class="ms-2 fs-4 bi bi-stopwatch-fill text-dark"></i>
+                            <a href="#"  data-bs-toggle="tooltip" data-bs-title="Questions in this quiz must be answered within a certain duration"><i class="ms-2 fs-4 bi bi-stopwatch-fill text-dark"></i>
                             </a>
-                        
+                            
                         {%endif%}
                     </div>
                 </div>
