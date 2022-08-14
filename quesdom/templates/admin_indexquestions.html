@@ -3,16 +3,16 @@
 <div class="content-section row gap-3 p-2 pt-md-5 justify-content-center">
     <div class="col-10 col-sm-6 col-md-6">
         <div class="top-buttons d-flex justify-content-between">
-            <a class="btn btn-secondary" href="{{url_for('indexquiz')}}">Back to Quizzes</a>
-            <a class="btn btn-primary" href="{{url_for('createquestion',quiz_id=quiz_id)}}">Add Question</a>
+            <a class="btn btn-secondary" href="{{url_for('admin_indexquiz')}}">Back to Quizzes</a>
+            <a class="btn btn-primary" href="{{url_for('admin_createquestion',quiz_id=quiz_id)}}">Add Question</a>
         </div>
         {%for question in questions%}
         <div class="card my-3">
             <div class="card-header d-flex justify-content-between">
                 <span class="question">{{loop.index}} - {{question.question_statement}}</span>
                 <span class=" ms-2 buttons text-nowrap">
-                    <a class="btn btn-sm btn-outline-primary" href="{{url_for('updatequestion',question_id = question.id)}}">Modify</a>
-                    <a class="btn btn-sm btn-danger" href="{{url_for('deletequestion',question_id = question.id,quiz_id=question.quiz_id)}}">Delete</a>
+                    <a class="btn btn-link p-0" href="{{url_for('admin_updatequestion',question_id = question.id)}}"><i class="bi bi-pencil-square text-primary fs-3"></i></a>
+                    <a class="btn btn-link p-0" href="{{url_for('admin_deletequestion',question_id = question.id,quiz_id=question.quiz_id)}}"><i class="bi bi-trash3-fill text-danger fs-3"></i></a>
                 </span>
             </div>
             <div class="card-body list-group p-0" style="border-top-left-radius: 0px; border-top-right-radius: 0px;">

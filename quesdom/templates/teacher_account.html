@@ -1,4 +1,4 @@
-{%extends "student_layout.html"%}
+{%extends "teacher_layout.html"%}
 {%block content%}
 <div class="content-section row gap-0 pt-md-5">
     <div class="col-12 p-2">
@@ -47,7 +47,7 @@
             </div>
             <div class="card-body">
                 <div class="p-3">
-                    <a class="btn btn-outline-danger w-100" href="#">Change Password</a>
+                    <a class="btn btn-outline-danger w-100" href="{{url_for('teacher_updatepassword')}}">Change Password</a>
                 </div>
                 <div class="p-3">
                     <a class="btn btn-outline-danger w-100" href="#">Delete Account</a>

@@ -40,6 +40,7 @@
                         <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacher_indexquiz', class_id = class.id)}}">View Quizzes</a>
                         <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacher_indexstudents', class_id = class.id)}}">View Students</a>
                         <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacher_indexrequests', class_id = class.id)}}">Joining Requests</a>
+                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacher_deleteclassroom')}}" data-bs-classid = {{class.id}} data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Classroom</a>
                     </td>
                 </tr>
             {%endfor%}
@@ -63,4 +64,40 @@
        </div> 
     {%endif%}
 </div>
+<!--Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        Are you sure you want to delete this classroom?
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <a href="#" class="btn btn-danger modal-yes-button">Yes</a>
+        </div>
+    </div>
+    </div>
+</div>
+<script>
+    /*The code below adds the correct hyperlink to the yes button in delete Quiz modal*/
+    const exampleModal = document.getElementById('deleteModal')
+    deleteModal.addEventListener('show.bs.modal', event => {
+    // Button that triggered the modal
+    const button = event.relatedTarget
+    // Extract info from data-bs-* attributes
+    const classid = button.getAttribute('data-bs-classid')
+    const delurl = button.getAttribute('href')
+    // If necessary, you could initiate an AJAX request here
+    // and then do the updating in a callback.
+    //
+    // Update the modal's content.
+    const modalYesButton = deleteModal.querySelector('.modal-yes-button')
+
+    modalYesButton.href = delurl + "?class_id=" + classid
+})
+</script>
 {% endblock %}

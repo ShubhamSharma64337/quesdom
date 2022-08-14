@@ -1,4 +1,4 @@
-from ast import Str, Sub
+from ast import Pass, Str, Sub
 from secrets import choice
 from tokenize import String
 from quesdom.models import Users,Choices
@@ -6,7 +6,11 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError, SelectField, TextAreaField, IntegerField, RadioField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, NumberRange
 
-
+class ChangePasswordForm(FlaskForm):
+    old_password = PasswordField('Old Password',validators = [DataRequired()])
+    new_password = PasswordField('New Password',validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password',validators = [DataRequired(),EqualTo('new_password',message='Confirm password must be equal to New Password')])
+    submit = SubmitField('Change Password')
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(),Length(min=2,max=20)])
@@ -108,6 +112,7 @@ class CreateQuizFromApiForm(FlaskForm):
     difficulty = SelectField('Difficulty',choices=['Easy','Medium','Hard'],validators=[DataRequired()])
     description = TextAreaField('Description',validators=[DataRequired(),Length(min=2,max=200)])
     numques = IntegerField('Number of questions',validators=[DataRequired()])
+    timed = BooleanField('With Timer')
     submit = SubmitField('Submit')
 
 class CreateJoinRequestForm(FlaskForm):

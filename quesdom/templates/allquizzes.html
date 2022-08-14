@@ -1,44 +1,71 @@
 {%extends "layout.html"%}
 {%block content%}
-<div class="content-section row pt-md-5">
+<div class="content-section justify-content-center row pt-md-5">
+    {%if quizzes.query.count() == 0 %}
+    <div class="col-10 col-md-6 btn btn-lg btn-light p-5 d-flex border justify-content-center mt-5 align-items-center">Quizzes will be added soon</div>
+    {%else%}
     {%for quiz in quizzes.items%}
-        <div class="col-12 col-sm-6 col-md-3 p-5 p-md-3">
+
+        <div class="col-10 col-sm-6 col-md-3 p-5 p-md-3">
 
             <div class="my-card" style="border-radius: 0.3rem; box-shadow: 0 0.1rem 0.2rem 0rem lightgrey; background-color: white;">
-                <div class="img-section" style="border-radius: 0.3rem 0.3rem 0 0; height: min-content; overflow: hidden;">
+                <a href="{{url_for('quizdetails',quiz_id = quiz.id)}}" >
+                    <div class="img-section" style="border-radius: 0.3rem 0.3rem 0 0; height: min-content; overflow: hidden;">
                         <img src="../static/quiz.jpg" class="img-fluid" style="width: 100%;"/>
                         
-                </div>
+                    </div>
+                </a>
                 <div class="text-section py-3 mx-3">
-                    <p class="fs-4 fw-bold" style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{quiz.quiz_title}}</p>
+                    <a href="{{url_for('quizdetails',quiz_id = quiz.id)}}" class="text-decoration-none">
+                        <p class="fs-4 fw-bold text-dark" style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{quiz.quiz_title}}</p>
+                    </a>
                     <div class="w-100 d-flex align-items-center justify-content-between">
                         <a href="{{url_for('playquiz',quiz_id=quiz.id)}}" class="fw-bold fs-5 text-success play-link">Play Now</a>
                         {%if quiz.timed %}
                             <a href="#"  data-bs-toggle="tooltip" data-bs-title="Questions in this quiz must be answered within a certain duration"><i class="ms-2 fs-4 bi bi-stopwatch-fill text-dark"></i>
                             </a>
-                            
                         {%endif%}
                     </div>
                 </div>
+
             </div>
         </div>
 
     {%endfor%}
-    <div class="page-links py-3 text-center">
-        {% for page_num in quizzes.iter_pages() %}
-        {% if page_num %}
-            {% if quizzes.page == page_num %}
-                <a class="active btn btn-outline-success" href="{{url_for('allquizzes',page=page_num)}}">{{page_num}}</a>
+    <nav aria-label="..." class="d-flex justify-content-center">
+        <ul class="pagination">
+          
+          {% for page_num in quizzes.iter_pages() %}
+            {% if page_num %}
+                {% if quizzes.page == page_num %}
+                    <li class="page-item"><a class="active page-link" href="{{url_for('allquizzes',page=page_num)}}">{{page_num}}</a></li>
 
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="{{url_for('allquizzes',page=page_num)}}">{{page_num}}</a></li>
+                {% endif %}
             {% else %}
-                <a class="btn btn-outline-success" href="{{url_for('allquizzes',page=page_num)}}">{{page_num}}</a>
+                <li class="page-item"><span>...</span></li>
             {% endif %}
-        {% else %}
-            <span class="btn btn-outline-success">...</span>
+          {% endfor %}
+          
+        </ul>
+      </nav>
+        <!-- <div class="page-links py-3 text-center">
+            {% for page_num in quizzes.iter_pages() %}
+                {% if page_num %}
+                    {% if quizzes.page == page_num %}
+                        <a class="active btn btn-outline-success" href="{{url_for('allquizzes',page=page_num)}}">{{page_num}}</a>
 
-        {% endif %}
-    {% endfor %}
-    </div>
+                    {% else %}
+                        <a class="btn btn-outline-success" href="{{url_for('allquizzes',page=page_num)}}">{{page_num}}</a>
+                    {% endif %}
+                {% else %}
+                    <span class="btn btn-outline-success">...</span>
+
+                {% endif %}
+            {% endfor %}
+        </div> -->
+    {% endif %}
 </div>
 <script>
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')

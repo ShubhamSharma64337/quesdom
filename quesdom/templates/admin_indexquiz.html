@@ -55,12 +55,16 @@
                         {{quiz.created_by.username}}
                     </td>
                     <td>
-                        {{quiz.timed}}
+                        {% if quiz.timed %}
+                        Yes
+                        {% else %}
+                        No
+                        {% endif %}
                     </td>
                     <td class="text-nowrap text-end">
-                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('admin_createquestion',quiz_id=quiz.id)}}">Add Questions</a>
-                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('admin_indexquestions',quiz_id=quiz.id)}}">View Questions</a>
-                        <a class="btn btn-outline-danger btn-sm" href="{{url_for('admin_deletequiz')}}" data-bs-quizid = {{quiz.id}} data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Quiz</a>
+                        <a class="btn btn-outline-primary " href="{{url_for('admin_createquestion',quiz_id=quiz.id)}}">Add Questions</a>
+                        <a class="btn btn-outline-primary " href="{{url_for('admin_indexquestions',quiz_id=quiz.id)}}">View Questions</a>
+                        <a class="btn btn-link p-1 " href="{{url_for('admin_deletequiz')}}" data-bs-quizid = {{quiz.id}} data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="text-danger fs-4 bi bi-trash3-fill fs-auto"></i></a>
                     </td>
                 </tr>
             {%endfor%}
@@ -69,13 +73,13 @@
             {% for page_num in quizzes.iter_pages() %}
             {% if page_num %}
                 {% if quizzes.page == page_num %}
-                    <a class="active btn btn-outline-primary btn-sm" href="{{url_for('admin_indexquiz',page=page_num)}}">{{page_num}}</a>
+                    <a class="active btn btn-outline-secondary btn-sm" href="{{url_for('admin_indexquiz',page=page_num)}}">{{page_num}}</a>
 
                 {% else %}
-                    <a class="btn btn-outline-primary btn-sm" href="{{url_for('admin_indexquiz',page=page_num)}}">{{page_num}}</a>
+                    <a class="btn btn-outline-secondary btn-sm" href="{{url_for('admin_indexquiz',page=page_num)}}">{{page_num}}</a>
                 {% endif %}
             {% else %}
-                <span class="btn btn-outline-primary btn-sm">...</span>
+                <span class="btn btn-outline-secondary btn-sm">...</span>
 
             {% endif %}
         {% endfor %}

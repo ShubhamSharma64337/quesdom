@@ -2,7 +2,7 @@
 {% block content %}
 <div class="row overflow-auto p-4 p-md-2">
     <div class="top-buttons d-flex justify-content-between">
-        <a class="my-4 btn btn-secondary" href="{{url_for('teacher_indexclassrooms')}}">Back</a>
+        <a class="mt-4 btn btn-secondary" href="{{url_for('teacher_indexquizzes')}}">Back</a>
     </div>
     <div class="col" >
         <table class="table bg-opacity-50 table-borderless bg-white mytable text-center rounded-1 overflow-hidden">
@@ -14,34 +14,28 @@
                 <td>
                     Name
                 </td>
-
                 <td>
-                    Semester
-                </td>
-                <td>
-                    Student ID
+                    Score
                 </td>
                 <td>
 
                 </td>
             </tr>
             
-            {%for student in students%}
+            {%for result in results%}
                 <tr valign="middle" >
                     <td>
                         {{loop.index}}
                     </td>
                     <td>
-                        {{student.student.name}}
+                        {{result.name}}
                     </td>
                     <td>
-                        {{student.student.semester}}
-                    </td>
-                    <td>
-                        {{student.student.id}}
+                        {{scores[loop.index-1]}}%
                     </td>
 
                     <td class="text-nowrap text-end">
+                        <a class="btn btn-outline-primary" href="{{url_for('teacher_getresult',stu_id = result.id,quiz_id = quiz_id)}}">Details</a>
                     </td>
                 </tr>
             {%endfor%}

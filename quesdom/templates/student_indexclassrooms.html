@@ -14,7 +14,7 @@
                     Class Name
                 </td>
                 <td class="text-end">
-                    <a class="btn btn-success" href="{{url_for('createjoinrequest')}}"><i class="bi bi-plus-circle"></i> Join Class</a>
+                    <a class="btn btn-success" href="{{url_for('student_createjoinrequest')}}"><i class="bi bi-plus-circle"></i> Join Class</a>
                 </td>
             </tr>
             
@@ -33,26 +33,12 @@
                     </td>
 
                     <td class="text-nowrap text-end">
-                        <a class="btn btn-primary btn-sm" href="{{url_for('createquestion')}}">View Quizzes</a>
+                        <a class="btn btn-primary btn-sm" href="{{url_for('student_indexquiz',class_id = class.id)}}">View Quizzes</a>
                     </td>
                 </tr>
             {%endfor%}
         </table>
-        <div class="page-links text-center">
-            {% for page_num in classes.iter_pages() %}
-            {% if page_num %}
-                {% if classes.page == page_num %}
-                    <a class="active btn btn-outline-primary btn-sm" href="{{url_for('teacherclassrooms',page=page_num)}}">{{page_num}}</a>
-
-                {% else %}
-                    <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacherclassrooms',page=page_num)}}">{{page_num}}</a>
-                {% endif %}
-            {% else %}
-                <span class="btn btn-outline-primary btn-sm">...</span>
-
-            {% endif %}
-        {% endfor %}
-        </div>
+        
     </div> 
 </div>
 {% endblock %}

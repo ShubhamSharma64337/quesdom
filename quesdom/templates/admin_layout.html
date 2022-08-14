@@ -29,23 +29,13 @@
                       <li class="nav-item">
                         <a class="nav-link {%if title=='All Quizzes' %} active {%endif%} text-center mx-3" href="{{url_for('admin_indexquiz')}}">Quizzes</a>
                       </li>
+                      <li class="nav-item">
+                        <a class="nav-link {%if title=='My Account' %} active {%endif%} text-center mx-3" href="{{url_for('admin_account')}}">Account</a>
+                      </li>
           </ul>
             {% if current_user.is_authenticated %}
               <div class="login-btn d-flex justify-content-center">
-                <a style="border: 1px solid lightgrey; transition: 0.2s;" class="bg-white login-btn-inner fw-bold px-4 py-2  text-dark btn fs-5 rounded-1 me-2" type="button" href="
-                {%if current_user.role == 'Admin'%}
-                  {{url_for('admindash')}}
-                {%elif current_user.role == 'Teacher'%}
-                  {{url_for('teacherdash')}}
-                {%elif current_user.role == 'Player'%}
-                  {{url_for('playerdash')}}
-                {%else%}
-                  {{url_for('studentdash')}}
-                {%endif%}
-                  
-                  
-                  
-                  ">Dashboard</a>
+                
                 <a style="border: 1px solid lightgrey; transition: 0.2s;" class="bg-white login-btn-inner fw-bold px-4 py-2 btn text-dark fs-5 rounded-1 me-2" type="button" href="{{url_for('logout')}}">Logout</a>
               </div>
 

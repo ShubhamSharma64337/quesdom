@@ -17,7 +17,7 @@
     <script src="{{ url_for('static',filename='../static/bootstrap-5.2.0-dist/js/popper.min.js') }}"></script>
     <script src="{{ url_for('static',filename='../static/bootstrap-5.2.0-dist/js/bootstrap.bundle.min.js') }}"></script>
   </head>
-  <body  style="height: 100vh; font-family: Inter;" >
+  <body  style="height: 100vh; font-family: Inter;" onload="adjustLoginBtn();">
     <nav class="px-2 navbar navbar-expand-lg bg-opacity-50 bg-white border-bottom">
       <div class="container-fluid">
         <a class="navbar-brand fw-bolder" href="{{url_for('home')}}"><span class="brand-text">Quesdom</span></a>
@@ -27,24 +27,34 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="ms-auto navbar-nav me-auto mb-2 mb-lg-0">
 
-                    <li class="nav-item mx-3 ">
-                      <a class="nav-link {%if title=='Classrooms' %} active {%endif%} text-center" aria-current="page" href="{{url_for('teacher_indexclassrooms')}}">Classrooms</a>
+                    <li class="nav-item ">
+                      <a class="nav-link {%if title=='Home' %} active {%endif%} text-center" aria-current="page" href="{{url_for('home')}}">Home</a>
                     </li>
-                    <li class="nav-item mx-3">
-                      <a class="nav-link {%if title=='My Account' %} active {%endif%} text-center" aria-current="page" href="{{url_for('teacher_account')}}">Account</a>
-                    </li>
-                    <!-- 
+                    
                       <li class="nav-item">
                         <a class="nav-link {%if title=='All Quizzes' %} active {%endif%} text-center mx-3" href="{{url_for('allquizzes')}}">Quizzes</a>
                       </li>
                       <li class="nav-item">
                         <a class="nav-link {%if title=='About Page' %} active {%endif%} text-center" href="{{url_for('about')}}">About</a>
-                      </li> -->
+                      </li>
   
           </ul>
             {% if current_user.is_authenticated %}
               <div class="login-btn d-flex justify-content-center">
-                
+                <a style="border: 1px solid lightgrey; transition: 0.2s;" class="bg-white login-btn-inner fw-bold px-4 py-2  text-dark btn fs-5 rounded-1 me-2" type="button" href="
+                {%if current_user.role == 'Admin'%}
+                  {{url_for('admin_indexquiz')}}
+                {%elif current_user.role == 'Teacher'%}
+                  {{url_for('teacher_indexclassrooms')}}
+                {%elif current_user.role == 'Player'%}
+                  {{url_for('player_account')}}
+                {%else%}
+                  {{url_for('student_account')}}
+                {%endif%}
+                  
+                  
+                  
+                  ">Dashboard</a>
                 <a style="border: 1px solid lightgrey; transition: 0.2s;" class="bg-white login-btn-inner fw-bold px-4 py-2 btn text-dark fs-5 rounded-1 me-2" type="button" href="{{url_for('logout')}}">Logout</a>
               </div>
 
@@ -57,7 +67,7 @@
       </div>
     </nav>
     
-    <div class="container">
+    <div style="box-sizing: border-box; overflow: hidden;">
         {% with messages= get_flashed_messages(with_categories=true) %}
           {%if messages%}
             {% for category,message in messages%}
@@ -68,7 +78,8 @@
             {%endfor%}
             {%endif%}
             {%endwith%}
-            {%block content%}{%endblock%}
+            {%block content%}
+            {%endblock%}
           </div>
           <script>
             /*The login button's width was lesser than the width of brand name, due to this the menu list
@@ -80,12 +91,11 @@
             function adjustLoginBtn(){
               var brand = document.getElementsByClassName('navbar-brand');
               var login = document.getElementsByClassName('login-btn');
-              login[0].style.width = window.getComputedStyle(brand[0]).width;//because there are two buttons, Login and Sign Up
+              brand[0].style.width = window.getComputedStyle(brand[0]).width;//because there are two buttons, Login and Sign Up
               console.log("Login button adjusted");
             }
             
             window.onload = function(){
-              adjustLoginBtn();
               var resetbuttons = document.getElementsByClassName('resetbutton')
               console.log(resetbuttons.length)
               for (var i = 0; i<resetbuttons.length;i++){

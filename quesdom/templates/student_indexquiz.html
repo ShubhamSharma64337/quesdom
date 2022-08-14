@@ -1,0 +1,67 @@
+{%extends "student_layout.html"%}
+{%block content%}
+<div class="row overflow-auto p-4 p-md-2">
+    <div class="col" >
+        <table class="table bg-opacity-50 table-borderless bg-white mytable text-center rounded-1 overflow-hidden">
+            <tr class="table-warning" valign="middle">
+                <td>
+                    S. No.
+                </td>
+                <td>
+                    Quiz Title
+                </td>
+                <td>
+                    Quiz Category
+                </td>
+                <td>
+                    Quiz Difficulty
+                </td>
+                <td>
+                    Added On
+                </td>
+                
+                <td>
+                    Timed
+                </td>
+                <td></td>
+            </tr>
+            
+            {%for quiz in quizzes%}
+                <tr valign="middle" >
+                    <td>
+                        <!--This will use the page variable sent by the action method
+                        to create the serial numbers for the current page dynamically-->
+                        {{loop.index}}
+                    </td>
+                    <td>
+                        {{quiz.quiz_title}}
+                    </td>
+                    <td>
+                        {{quiz.quiz_category}}
+                    </td>
+                    <td>
+                        {{quiz.quiz_difficulty}}
+                    </td>
+                    <td>
+                        {{quiz.date_created.day}}-{{quiz.date_created.month}}-{{quiz.date_created.year}}
+                        
+                    </td>
+                    
+                    <td>
+                        {% if quiz.timed %}
+                        Yes
+                        {% else %}
+                        No
+                        {% endif %}
+                    </td>
+                    <td class="text-nowrap text-end">
+                        <a class="btn btn-outline-danger btn-sm" href="{{url_for('playquiz',quiz_id = quiz.id)}}">Play Quiz</a>
+                    </td>
+                </tr>
+            {%endfor%}
+        </table>
+        
+    </div> 
+</div>
+
+{%endblock%}

@@ -43,13 +43,13 @@
               <div class="login-btn d-flex justify-content-center">
                 <a style="border: 1px solid lightgrey; transition: 0.2s;" class="bg-white login-btn-inner fw-bold px-4 py-2  text-dark btn fs-5 rounded-1 me-2" type="button" href="
                 {%if current_user.role == 'Admin'%}
-                  {{url_for('admindash')}}
+                  {{url_for('admin_indexquiz')}}
                 {%elif current_user.role == 'Teacher'%}
-                  {{url_for('teacherdash')}}
+                  {{url_for('teacher_indexclassrooms')}}
                 {%elif current_user.role == 'Player'%}
-                  {{url_for('playerdash')}}
+                  {{url_for('player_account')}}
                 {%else%}
-                  {{url_for('studentdash')}}
+                  {{url_for('student_account')}}
                 {%endif%}
                   
                   

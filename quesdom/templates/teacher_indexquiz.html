@@ -1,6 +1,10 @@
 {%extends "teacher_layout.html"%}
 {%block content%}
 <div class="row overflow-auto p-4 p-md-2">
+    <div class="top-buttons my-3 d-flex align-items-center justify-content-between">
+        <a class="btn btn-secondary" href="{{url_for('teacher_indexclassrooms')}}">Back to classrooms</a>
+        <p class="h4 d-none d-md-block">Quizzes in - <span class="text-decoration-underline">{{title}}</span></p>
+    </div>
     <div class="col" >
         <table class="table bg-opacity-50 table-borderless bg-white mytable text-center rounded-1 overflow-hidden">
             <tr class="table-warning" valign="middle">
@@ -26,8 +30,8 @@
                     Timed
                 </td>
                 <td class="text-end">
-                    <a class="btn btn-success" href="{{url_for('teacher_createquizfromapi')}}"><i class="bi bi-plus-circle"></i> Add Using API</a>
-                    <a class="btn btn-success" href="{{url_for('teacher_createquiz')}}"><i class="bi bi-plus-circle"></i> Add</a>
+                    <a class="btn btn-success" href="{{url_for('teacher_createquizfromapi',class_id = class_id)}}"><i class="bi bi-plus-circle"></i> Add Using API</a>
+                    <a class="btn btn-success" href="{{url_for('teacher_createquiz',class_id = class_id)}}"><i class="bi bi-plus-circle"></i> Add</a>
                 </td>
             </tr>
             
@@ -55,11 +59,16 @@
                         {{quiz.created_by.username}}
                     </td>
                     <td>
-                        {{quiz.timed}}
+                        {% if quiz.timed %}
+                        Yes
+                        {% else %}
+                        No
+                        {% endif %}
                     </td>
                     <td class="text-nowrap text-end">
                         <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacher_createquestion',quiz_id=quiz.id)}}">Add Questions</a>
-                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacher_indexquestions',quiz_id=quiz.id)}}">View Questions</a>
+                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacher_indexquestions',quiz_id=quiz.id, class_id = class_id)}}">View Questions</a>
+                        <a class="btn btn-outline-primary btn-sm" href="{{url_for('teacher_indexresults',quiz_id=quiz.id)}}">View Submissions</a>
                         <a class="btn btn-outline-danger btn-sm" href="{{url_for('teacher_deletequiz')}}" data-bs-quizid = {{quiz.id}} data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Quiz</a>
                     </td>
                 </tr>
