@@ -1,4 +1,5 @@
 from ast import Pass, Str, Sub
+from distutils.text_file import TextFile
 from secrets import choice
 from tokenize import String
 from quesdom.models import Users,Choices
@@ -114,6 +115,14 @@ class CreateQuizFromApiForm(FlaskForm):
     numques = IntegerField('Number of questions',validators=[DataRequired()])
     timed = BooleanField('With Timer')
     submit = SubmitField('Submit')
+
+class UpdateQuizForm(FlaskForm):
+    title = StringField('Quiz Title',validators=[DataRequired()])
+    category = StringField('Quiz Category', validators=[DataRequired()])
+    difficulty = SelectField('Difficulty',choices=['Easy','Medium','Hard'],validators=[DataRequired()])
+    description = TextAreaField('Description',validators=[DataRequired(),Length(min=2,max=200)])
+    timed = BooleanField('With Timer')
+    submit = SubmitField('Update')
 
 class CreateJoinRequestForm(FlaskForm):
     class_id = IntegerField('Classroom ID',validators=[DataRequired()])

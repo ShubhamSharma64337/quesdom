@@ -5,7 +5,7 @@
     <form action="/submitquiz" method="POST" class="row">
       <input type="hidden" name="quiz_id" value="{{quiz_id}}"/>
       
-      <div class="all-cards p-0 m-0 border rounded-3 overflow-hidden shadow">
+      <div class="all-cards bg-white p-0 m-0 border rounded-3 overflow-hidden shadow">
         <span id="progress" class="mb-3 d-block"></span>
         <div class="mb-3 col-12 justify-content-between d-flex px-3">
           <button type="button" class="btn btn-primary my-previous-button disabled"  data-page="1">Previous</button>
@@ -18,7 +18,7 @@
           {% set dprop = "d-none"%}
         {% endif %}
         <div class="question-card {{dprop}} position-relative" data-index="{{loop.index}}">
-          <div class="card-header border-bottom p-5 bg-white text-center">
+          <div class="card-header border-bottom p-5 text-center">
             <span class="border px-3 py-2 rounded-5 bg-light">
               {{loop.index}} of {{questions.count()}}
             </span>

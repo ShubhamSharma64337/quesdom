@@ -2,7 +2,7 @@ from ast import Or
 from html.parser import HTMLParser
 from msilib.schema import Class
 from flask import render_template,flash,redirect, request, url_for
-from quesdom.forms import ChangePasswordForm, CreateClassForm, CreateQuizFromApiForm, RegistrationForm, TeacherRegistrationForm, StudentRegistrationForm, LoginForm,CreateQuizForm,CreateQuestionForm, UpdateQuestionForm, CreateJoinRequestForm
+from quesdom.forms import ChangePasswordForm, UpdateQuizForm, CreateClassForm, CreateQuizFromApiForm, RegistrationForm, TeacherRegistrationForm, StudentRegistrationForm, LoginForm,CreateQuizForm,CreateQuestionForm, UpdateQuestionForm, CreateJoinRequestForm
 from quesdom.models import Classrooms, Questions, Quizzes, Requests, StudentClassroom, Users, Choices, Answers, Teachers, Students, Classrooms
 from quesdom import app,bcrypt,db
 from flask_login import login_user,current_user,logout_user,login_required
@@ -232,6 +232,33 @@ def admin_createquizfromapi():
         flash('Quiz created from API successfully','success')
         return redirect(url_for('admin_indexquiz'))
     return render_template('admin_createquizfromapi.html',title='API Quiz Form', form=form)
+
+@app.route('/admin/updatequiz',methods=['GET','POST'])
+@login_required
+def admin_updatequiz():
+    if not current_user.role == 'Admin':
+        flash('You must be an admin to access this page!',category='info')
+        return redirect(url_for('home'))
+    form = UpdateQuizForm()
+    quiz = Quizzes.query.get(request.args.get('quiz_id'))
+    if form.validate_on_submit():
+        quiz.quiz_title = form.title.data
+        quiz.quiz_description = form.description.data
+        quiz.timed = form.timed.data
+        quiz.difficulty = form.difficulty.data
+        quiz.category = form.category.data
+        db.session.commit()
+        flash('Quiz updated successfully!','success')
+        return redirect(url_for('admin_indexquiz',quiz_id=request.args.get('quiz_id')))
+    
+    form.title.data = quiz.quiz_title
+    form.category.data = quiz.quiz_category
+    form.description.data = quiz.quiz_description
+    form.difficulty.data = quiz.quiz_difficulty
+    form.timed.data = quiz.timed
+    
+    return render_template('admin_updatequiz.html',title='Update a Quiz',form=form,quiz_id=request.args.get('quiz_id'))
+
 
 @app.route('/admin/deletequiz')
 @login_required

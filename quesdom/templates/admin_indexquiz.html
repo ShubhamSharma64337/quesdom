@@ -3,7 +3,7 @@
 <div class="row overflow-auto p-4 p-md-2">
     <div class="col" >
         <table class="table bg-opacity-50 table-borderless bg-white mytable text-center rounded-1 overflow-hidden">
-            <tr class="table-warning" valign="middle">
+            <tr class="table-warning text-nowrap" valign="middle">
                 <td>
                     S. No.
                 </td>
@@ -61,10 +61,20 @@
                         No
                         {% endif %}
                     </td>
+
                     <td class="text-nowrap text-end">
-                        <a class="btn btn-outline-primary " href="{{url_for('admin_createquestion',quiz_id=quiz.id)}}">Add Questions</a>
-                        <a class="btn btn-outline-primary " href="{{url_for('admin_indexquestions',quiz_id=quiz.id)}}">View Questions</a>
+                        <a class="btn btn-link p-1 " href="{{url_for('admin_updatequiz',quiz_id=quiz.id)}}"><i class="bi bi-pencil-square fs-4"></i></a>
                         <a class="btn btn-link p-1 " href="{{url_for('admin_deletequiz')}}" data-bs-quizid = {{quiz.id}} data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="text-danger fs-4 bi bi-trash3-fill fs-auto"></i></a>
+                        <div class="dropstart d-inline">
+                            <button class="dropdown-toggle-wo-arrow btn btn-light dropstart-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fs-5 bi bi-three-dots"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item " href="{{url_for('admin_createquestion',quiz_id=quiz.id)}}">Add Questions</a></li>
+                                <li><a class="dropdown-item  " href="{{url_for('admin_indexquestions',quiz_id=quiz.id)}}">View Questions</a></li>
+
+                            </ul>
+                          </div>
                     </td>
                 </tr>
             {%endfor%}

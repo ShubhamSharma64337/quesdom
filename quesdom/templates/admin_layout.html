@@ -16,8 +16,13 @@
 
     <script src="{{ url_for('static',filename='../static/bootstrap-5.2.0-dist/js/popper.min.js') }}"></script>
     <script src="{{ url_for('static',filename='../static/bootstrap-5.2.0-dist/js/bootstrap.bundle.min.js') }}"></script>
+    <style>
+      .dropdown-toggle-wo-arrow::before {
+          content: none;
+      }
+    </style>
   </head>
-  <body  style="height: 100vh; font-family: Inter;" onload="adjustLoginBtn();">
+  <body  style="height: 100vh; font-family: Inter; background-image: url('../static/bubble.png');" onload="adjustLoginBtn();">
     <nav class="px-2 navbar navbar-expand-lg bg-opacity-50 bg-white border-bottom">
       <div class="container-fluid">
         <a class="navbar-brand fw-bolder" href="{{url_for('home')}}"><span class="brand-text">Quesdom</span></a>
@@ -61,6 +66,7 @@
             {%endwith%}
             {%block content%}{%endblock%}
           </div>
+          
           <script>
             /*The login button's width was lesser than the width of brand name, due to this the menu list
             was pulled towards the right and was not properly centered. So, using javascript, I will adjust the 
