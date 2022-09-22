@@ -342,6 +342,8 @@ def admin_deletequestion():
        flash('You must be an admin to access this page!',category='info')
        return redirect(url_for('home'))
     question = Questions.query.get(request.args.get('question_id'))
+    choice = Choices.query.get(question.choice_id)
+    db.session.delete(choice)
     db.session.delete(question)
     db.session.commit()
     return redirect(url_for('admin_indexquestions',quiz_id=request.args.get('quiz_id')))
@@ -655,7 +657,9 @@ def teacher_deletequestion():
     if not current_user.role == 'Teacher':
        flash('You must be an teacher to access this page!',category='info')
        return redirect(url_for('home'))
-    question = Questions.query.get(request.args.get('question_id'))
+    question = Questions.query.filter_by(id=request.args.get('question_id')).first()
+    choice = Choices.query.get(question.choice_id)
+    db.session.delete(choice)
     db.session.delete(question)
     db.session.commit()
     return redirect(url_for('teacher_indexquestions',quiz_id=request.args.get('quiz_id')))
@@ -672,7 +676,7 @@ def teacher_indexresults():
     for answer in answers:
         if Users.query.get(answer.user_id).role == 'Student':
             results.append(Students.query.get(Users.query.get(answer.user_id).stu_id))
-            scores.append(calc_percentage(quiz_id = request.args.get('quiz_id'),attempt = 1,current_id = answer.user_id))
+            scores.append(int(calc_percentage(quiz_id = request.args.get('quiz_id'),attempt = 1,current_id = answer.user_id)))
             print(scores)
     return render_template('teacher_indexresults.html',title='Results',results = results, scores = scores, quiz_id = request.args.get('quiz_id'))
 
@@ -770,6 +774,17 @@ def player_account():
     if current_user.role == 'Player':
         return render_template('player_account.html',q_played = get_quizzes_played().count())
     return render_template('player_account.html',title='Account')
+
+@app.route('/player/deleteaccount')
+def player_deleteaccount():
+    if current_user.role != 'Player':
+        flash('You are not authorized to access this page!','danger')
+        return render_template('player_account.html',title='Account')
+    user = Users.query.get(current_user.id)
+    db.session.delete(user)
+    db.session.commit()
+    flash('Account deleted!','success')
+    return redirect(url_for('home'))
 
 @app.route('/player/updatepassword',methods=['GET','POST'])
 def player_updatepassword():

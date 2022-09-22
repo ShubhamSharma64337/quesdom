@@ -50,7 +50,7 @@
                     <a class="btn btn-outline-danger w-100" href="{{url_for('player_updatepassword')}}">Change Password</a>
                 </div>
                 <div class="p-3">
-                    <a class="btn btn-outline-danger w-100" href="#">Delete Account</a>
+                    <a class="btn btn-outline-danger w-100" href="{{url_for('player_deleteaccount')}}" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Account</a>
                 </div>
                 <div class="p-3">
                     <a class="btn btn-outline-secondary w-100" href="#">Reset Account</a>
@@ -60,4 +60,39 @@
     </div>
   
 </div>
+
+<!--Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        Are you sure you want to delete your account? (Note that once you delete your account, it cannot be recovered.)
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <a href="#" class="btn btn-danger modal-yes-button">Yes</a>
+        </div>
+    </div>
+    </div>
+</div>
+<script>
+    /*The code below adds the correct hyperlink to the yes button in delete Quiz modal*/
+    const exampleModal = document.getElementById('deleteModal')
+    deleteModal.addEventListener('show.bs.modal', event => {
+    // Button that triggered the modal
+    const button = event.relatedTarget
+    const delurl = button.getAttribute('href')
+    // If necessary, you could initiate an AJAX request here
+    // and then do the updating in a callback.
+    //
+    // Update the modal's content.
+    const modalYesButton = deleteModal.querySelector('.modal-yes-button')
+    
+    modalYesButton.href = delurl
+})
+</script>
 {% endblock %}

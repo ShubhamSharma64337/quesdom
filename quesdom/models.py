@@ -29,7 +29,7 @@ class Quizzes(db.Model):
     timed = db.Column(db.Boolean, nullable = False)
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     author = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    created_by = db.relationship('Users',backref='created_by',lazy=True)
+    created_by = db.relationship('Users',backref='created_by',lazy=True,overlaps="quizzes,quizzes")
     questions = db.relationship('Questions',backref='contains',cascade="all, delete-orphan",lazy=True)
     class_id = db.Column(db.Integer, db.ForeignKey('classrooms.id'), nullable=True)
     def __repr__(self):
