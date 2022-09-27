@@ -1,6 +1,4 @@
-from ast import Or
 from html.parser import HTMLParser
-from msilib.schema import Class
 from flask import render_template,flash,redirect, request, url_for
 from quesdom.forms import ChangePasswordForm, UpdateQuizForm, CreateClassForm, CreateQuizFromApiForm, RegistrationForm, TeacherRegistrationForm, StudentRegistrationForm, LoginForm,CreateQuizForm,CreateQuestionForm, UpdateQuestionForm, CreateJoinRequestForm
 from quesdom.models import Classrooms, Questions, Quizzes, Requests, StudentClassroom, Users, Choices, Answers, Teachers, Students, Classrooms
