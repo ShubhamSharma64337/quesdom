@@ -402,6 +402,9 @@ def acceptrequest():
         flash('Request is already accepted','warning')
         return redirect(url_for('teacher_indexrequests'))
     req.status = True
+    if StudentClassroom.query.filter_by(stu_id = req.stu_id, class_id = req.class_id):
+        flash('Student already added to classroom','warning')
+        return redirect(url_for('teacher_indexrequests'))
     stu_class = StudentClassroom(stu_id = req.stu_id , class_id = req.class_id)
     db.session.add(stu_class)
     db.session.commit()
